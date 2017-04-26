@@ -15,7 +15,7 @@
 #' @include gridExtra
 #' @include lubridate
 
-cleaned_data <- function(term = "asylum") {
+get_plot_applications_Germany_by_sex <- function(term = "asylum") {
   datasets <- search_eurostat(term, type = "dataset")
   data <- get_eurostat("migr_asyappctza", time_format = "date") %>% label_eurostat()
   t <- data %>% filter(geo == "Germany (until 1990 former territory of the FRG)",
@@ -27,12 +27,12 @@ cleaned_data <- function(term = "asylum") {
   ggplot(t, aes(x = time, y = value / t$Total, color = sex)) + geom_line()
 }
 
-load_data <- function() {
+load_data_applications_api <- function() {
   datasets <- search_eurostat("asylum", type = "dataset")
   get_eurostat("migr_asyappctza", time_format = "date") %>% label_eurostat() %>% return()
 }
 
-load_data_acceptance <- function() {
+load_data_acceptance_api <- function() {
   get_eurostat("migr_asydcfstq", time_format = "date") %>% label_eurostat() %>%
     mutate(decision = ifelse(decision == "Total positive decisions",
                              "Total_positive_decisions",
@@ -41,6 +41,14 @@ load_data_acceptance <- function() {
     return()
 }
 
+load_data_acceptance_file <- function(filename) {
+  readRDS(filename) %>% label_eurostat() %>%
+    mutate(decision = ifelse(decision == "Total positive decisions",
+                             "Total_positive_decisions",
+                             decision)) %>%
+    filter(citizen != "Extra-EU-28")
+    return()
+}
 
 filter_destination_country <- function(data, countries = c("Germany (until 1990 former territory of the FRG)")) {
   data$citizen[data$citizen == "Kosovo (under United Nations Security Council Resolution 1244/99)"] <- "Kosovo"
@@ -57,7 +65,6 @@ filter_destination_country <- function(data, countries = c("Germany (until 1990 
 plot_by_c_of_origin_sex <- function(data, year_of_interest, top = 20) {
   data %<>%
     filter(age == "Total",
-           #sex == "Total",
            asyl_app == "First time applicant",
            citizen != "Total") %>%
     group_by(citizen, sex, time) %>%

@@ -1,11 +1,18 @@
-Package: datathon
+Package: eurostatasyl
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Download and Visualise Eurostat Asylum Data (Applications and Decisions)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Refugee Datathon Munich, 2017
+Maintainer: Suny <ynux@gmx.net>
+Description: Building on the package "eurostat: Tools for Eurostat Open Data"
+    https://CRAN.R-project.org/package=eurostat 
+    (C) Leo Lahti, Janne Huovari, Markus Kainu, Przemyslaw Biecek. R Journal 2017. 
+    Accepted for publication. Retrieval and analysis of Eurostat open data with the 
+    eurostat package R package version 3.1.1 URL: http://ropengov.github.io/eurostat
+    The goal is to create useful visualisations, e.g. comparing acceptance rates of asylum
+    applications per country of origin across European countries. Or the percentage
+    of female applicants per country of origin.
+    Import: tidyr, dplyr, magrittr, ggplot2, eurostat, gridExtra, lubridate 
+License:  	BSD_2_clause + file LICENSE
 Encoding: UTF-8
 LazyData: true
