@@ -1,0 +1,23 @@
+"geo","decision","sum_dec"
+"1","Belgium","Rejected",65
+"2","Belgium","Total",715
+"3","France","Rejected",445
+"4","France","Total",925
+"5","Germany (until 1990 former territory of the FRG)","Rejected",265
+"6","Germany (until 1990 former territory of the FRG)","Total",9565
+"7","Greece","Rejected",30
+"8","Greece","Total",95
+"9","Italy","Rejected",130
+"10","Italy","Total",660
+"11","Netherlands","Rejected",110
+"12","Netherlands","Total",4980
+"13","Norway","Rejected",155
+"14","Norway","Total",2770
+"15","Spain","Rejected",0
+"16","Spain","Total",5
+"17","Sweden","Rejected",185
+"18","Sweden","Total",6715
+"19","Switzerland","Rejected",1745
+"20","Switzerland","Total",6705
+"21","United Kingdom","Rejected",1735
+"22","United Kingdom","Total",3305

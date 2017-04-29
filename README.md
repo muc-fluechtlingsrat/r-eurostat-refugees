@@ -16,13 +16,23 @@ Now you can start. We have two use cases:
 1. load data: data = load_data_acceptance_from_file('/full/path/to/data/data_acceptance') to get the data from the file, or data = load_data_acceptance() to get it from eurostat. 
 This will load 8.6 MB / 45 mio values and look like
 
+> str(data)
+Classes ‘tbl_df’ and 'data.frame':	45571033 obs. of  8 variables:
+ $ citizen : chr  "Andorra" "Andorra" "Andorra" "Andorra" ...
+ $ sex     : chr  "Females" "Females" "Females" "Females" ...
+ $ age     : chr  "Total" "Total" "Total" "Total" ...
+ $ decision: chr  "Geneva Convention status" "Geneva Convention status" "Geneva Convention status" "Geneva Convention status" ...
+ $ geo     : chr  "Germany (until 1990 former territory of the FRG)" "Estonia" "European Union (28 countries)" "Liechtenstein" ...
+ $ unit    : chr  "Person" "Person" "Person" "Person" ...
+ $ time    : Date, format: "2017-01-01" "2017-01-01" "2017-01-01" ...
+ $ values  : num  0 0 0 0 0 0 0 0 0 0 ...
+> 
 
-  # A tibble: 45,571,033 × 8
-     citizen     sex   age                 decision                                              geo
-       <chr>   <chr> <chr>                    <chr>                                            <chr>
-  1  Andorra Females Total Geneva Convention status Germany (until 1990 former territory of the FRG)
-  2  Andorra Females Total Geneva Convention status                                          Estonia
-  3  Andorra Females Total Geneva Convention status                    European Union (28 countries)
-  4  Andorra Females Total Geneva Convention status                                    Liechtenstein
-  
-  
+to see all Countries of Origin:
+
+unique(data[[1]])
+
+to see all countries of destination / where the application was submitted, or decided:
+
+unique(data[[5]])
+
