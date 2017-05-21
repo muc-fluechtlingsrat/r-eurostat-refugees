@@ -1,0 +1,1 @@
+{"mappings" : { "migr_asyappctza_by_sex": { "properties": { "geo": { "type": "text", "fields": { "keyword": { "ignore_above": 256, "type": "keyword" } } }, "sex": { "type": "text", "fields": { "keyword": { "ignore_above": 256, "type": "keyword" } } }, "time": { "type": "date" }, "value": { "type": "long" } } } } }
