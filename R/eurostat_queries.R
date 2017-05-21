@@ -17,7 +17,7 @@
 
 get_plot_applications_Germany_by_sex <- function(term = "asylum") {
   datasets <- search_eurostat(term, type = "dataset")
-  data <- get_eurostat("migr_asyappctza", time_format = "date") %>% label_eurostat()
+  data <- get_eurostat("migr_asyappctza", time_format = "date")
   t <- data %>% filter(geo == "Germany (until 1990 former territory of the FRG)",
                        citizen == "Total",
                        age == "Total",
