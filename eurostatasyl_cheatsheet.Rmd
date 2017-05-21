@@ -1,0 +1,49 @@
+data# r-eurostat-refugees cheat sheet
+
+Some hints at how to use eurostatasyl
+
+## Prepare packages / libraries
+
+```{r}
+ipak <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) 
+        install.packages(new.pkg, dependencies = TRUE)
+    sapply(pkg, require, character.only = TRUE)
+}
+
+
+packages <- c("ggplot2", "plyr", "reshape2", "RColorBrewer", "scales", "grid")
+list.of.packages <- c("tidyr", "dplyr", "magrittr", "ggplot2", "eurostat", "gridExtra", "lubridate")
+ipak(list.of.packages)
+library(eurostatasyl)
+```
+
+## Compare acceptance of asylum requests of one country of origin, across countries of application
+
+1. load data: acc_data = load_data_acceptance_file('/full/path/to/data/data_acceptance') to get the data from the file, or acc_data = load_data_acceptance() to get it from eurostat. 
+
+```{r echo = FALSE}
+acc_data = load_data_acceptance_file('/Users/suny/r-eurostat-refugees/data/data_acceptance')
+```
+
+This will load 8.6 MB / 45 mio values and look like
+
+2. Have a look at the data
+
+```{r}
+str(acc_data)
+```
+
+to see all Countries of Origin:
+
+```{r}
+unique(acc_data[[1]])
+```
+
+to see all countries of destination / where the application was submitted, or decided:
+
+```{r}
+unique(data[[5]])
+```
+
