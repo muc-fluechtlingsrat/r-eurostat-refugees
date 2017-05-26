@@ -187,3 +187,5 @@ acceptanceDualBarplot <- function(asyAcc, citizen, year=NULL, ...)
   par(opar);
   return(invisible(l));
 }
+
+

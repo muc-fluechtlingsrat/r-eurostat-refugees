@@ -1,8 +1,6 @@
 # r-eurostat-refugees
 
-This is a package, and a rstudio project
-
-using https://github.com/rOpenGov/eurostat , to get and visualize asylum data from eurostat
+This is a package, and a rstudio project, based on https://github.com/rOpenGov/eurostat , to get and visualize asylum data from eurostat
 
 1. Install R and rstudio
 
