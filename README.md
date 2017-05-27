@@ -8,6 +8,7 @@ This is a package, and a rstudio project, based on https://github.com/rOpenGov/e
 3. import and load all libraries by running import_packages.R (there are probably better ways)
 
 Now you can start. We have two use cases:
+To know which eurostat data source to use, check out http://htmlpreview.github.io/?https://github.com/muc-fluechtlingsrat/r-eurostat-refugees/blob/master/man/eurostat_asylum_data_sources.html
 
 ## Compare acceptance of asylum requests of one country of origin, across countries of application
 
