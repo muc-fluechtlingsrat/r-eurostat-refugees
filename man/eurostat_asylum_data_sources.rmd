@@ -11,36 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Eurostat Asylum Data Sources
 
-First, you want to know which eurostat dataset or table to use. Without R, you can download it the native way. This is also useful as a double check if you found all the relevant sources.
-* Download table codes from http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=dic%2Fde%2Ftable_dic.dic
-From this, we expect 17 MIGR_ASY datasets, and 6 TPS tables, = 23 data sources.
-
-With R:
-
-```{r tables_and_datasets}
-
-library(knitr)
-library(eurostat)
-
-eurostat_data_asyl <- search_eurostat("syl",type="all")
-# Some of the asylum datasets don't have "asylum" in their description:
-eurostat_data_dec <- search_eurostat("instance decisions on appl",type="all")
-eurostat_data_withdrawn <- search_eurostat("withdraw", type="all")
-eurostat_data_resettle <- search_eurostat("Resettled persons ", type="all")
-eurostat_data_sources <- rbind(eurostat_data_asyl, eurostat_data_dec, eurostat_data_resettle, eurostat_data_withdrawn)
-# now we have duplicates
-eurostat_data_sources_u <- unique.data.frame(eurostat_data_sources)
-eurostat_data_asyl_sorted <- subset(eurostat_data_sources_u[order(eurostat_data_sources_u$code),], type != "folder")
-# Do we get the 23 rows that we expect?
-dim(eurostat_data_asyl_sorted)
-kable(eurostat_data_asyl_sorted, title="Eurostat Data Sources on Asylum")
-```
-
-Some of these are big. Unfortunately, the "values" column isn't filled the number of lines. It can be seen when looking the table up in the browser, as in 
-http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfstq&lang=en
-and then choosing the "information" icon http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/NodeInfoServices?lang=en&code=migr_asydcfstq
-u
-Our main sources are:
+First, you want to know which eurostat dataset or table to use. Our main sources are:
 
 Dataset Code            | Dataset Shortname                   | Number of values as of May 2017
 ------------------------| ------------------------------------|----------------------------------
@@ -49,5 +20,38 @@ Dataset Code            | Dataset Shortname                   | Number of values
  migr_asydcfstq         | First instance decisions, quarterly |                        46'153'986
  migr_asydcfsta         | First instance decisions, annual    |                        11'163'156
  
-For deeper background information, go to pages like
+
+How do you find all the eurostat sources on asylum? First, you can download it the native way from http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=dic%2Fde%2Ftable_dic.dic. This is also useful to double check if you found all the relevant sources.7
+From this, we expect on "asylum" and "resettlement" 17 MIGR_ASY datasets, and 6 TPS tables, = 24 data sources.
+
+With R eurostat:
+
+```{r tables_and_datasets}
+
+library(knitr)
+library(eurostat)
+
+eurostat_data_asyl <- search_eurostat("syl",type="all")
+# Some of the asylum datasets don't have "asylum" in their description:
+eurostat_data_dec <- search_eurostat("decisions on appl",type="all")
+eurostat_data_withdrawn <- search_eurostat("withdraw", type="all")
+eurostat_data_resettle <- search_eurostat("Resettled persons ", type="all")
+eurostat_data_sources <- rbind(eurostat_data_asyl, eurostat_data_dec, eurostat_data_resettle, eurostat_data_withdrawn)
+# now we have duplicates
+eurostat_data_sources_u <- unique.data.frame(eurostat_data_sources)
+eurostat_data_asyl_sorted <- subset(eurostat_data_sources_u[order(eurostat_data_sources_u$code),], type != "folder")
+# Do we get the 23 rows that we expect?
+dim(eurostat_data_asyl_sorted)
+
+kable(eurostat_data_asyl_sorted, title="Eurostat Data Sources on Asylum")
+```
+
+Some of these are big. Unfortunately, the "values" column isn't filled the number of lines. It can be seen when looking the table up in the browser, as in 
+http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfstq&lang=en
+and then choosing the "information" icon http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/NodeInfoServices?lang=en&code=migr_asydcfstq
+
+
+For details and background information, go to pages like
 http://ec.europa.eu/eurostat/cache/metadata/en/migr_asyapp_esms.htm
+
+There are more sources on "Dublin" cases.

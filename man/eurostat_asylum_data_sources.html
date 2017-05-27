@@ -126,14 +126,46 @@ $(document).ready(function () {
 
 <div id="eurostat-asylum-data-sources" class="section level2">
 <h2>Eurostat Asylum Data Sources</h2>
-<p>First, you want to know which eurostat dataset or table to use. Without R, you can download it the native way. This is also useful as a double check if you found all the relevant sources. * Download table codes from <a href="http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;file=dic%2Fde%2Ftable_dic.dic">http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;file=dic%2Fde%2Ftable_dic.dic</a> From this, we expect 17 MIGR_ASY datasets, and 6 TPS tables, = 23 data sources.</p>
-<p>With R:</p>
+<p>First, you want to know which eurostat dataset or table to use. Our main sources are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Dataset Code</th>
+<th>Dataset Shortname</th>
+<th>Number of values as of May 2017</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>migr_asyappctza</td>
+<td>applications, annual</td>
+<td>3’033’853</td>
+</tr>
+<tr class="even">
+<td>migr_asyappctzm</td>
+<td>applications, monthly</td>
+<td>37’833’549</td>
+</tr>
+<tr class="odd">
+<td>migr_asydcfstq</td>
+<td>First instance decisions, quarterly</td>
+<td>46’153’986</td>
+</tr>
+<tr class="even">
+<td>migr_asydcfsta</td>
+<td>First instance decisions, annual</td>
+<td>11’163’156</td>
+</tr>
+</tbody>
+</table>
+<p>How do you find all the eurostat sources on asylum? First, you can download it the native way from <a href="http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;file=dic%2Fde%2Ftable_dic.dic">http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;file=dic%2Fde%2Ftable_dic.dic</a>. This is also useful to double check if you found all the relevant sources.7 From this, we expect on “asylum” and “resettlement” 17 MIGR_ASY datasets, and 6 TPS tables, = 24 data sources.</p>
+<p>With R eurostat:</p>
 <pre class="r"><code>library(knitr)
 library(eurostat)
 
 eurostat_data_asyl &lt;- search_eurostat(&quot;syl&quot;,type=&quot;all&quot;)
 # Some of the asylum datasets don't have &quot;asylum&quot; in their description:
-eurostat_data_dec &lt;- search_eurostat(&quot;instance decisions on appl&quot;,type=&quot;all&quot;)
+eurostat_data_dec &lt;- search_eurostat(&quot;decisions on appl&quot;,type=&quot;all&quot;)
 eurostat_data_withdrawn &lt;- search_eurostat(&quot;withdraw&quot;, type=&quot;all&quot;)
 eurostat_data_resettle &lt;- search_eurostat(&quot;Resettled persons &quot;, type=&quot;all&quot;)
 eurostat_data_sources &lt;- rbind(eurostat_data_asyl, eurostat_data_dec, eurostat_data_resettle, eurostat_data_withdrawn)
@@ -142,7 +174,7 @@ eurostat_data_sources_u &lt;- unique.data.frame(eurostat_data_sources)
 eurostat_data_asyl_sorted &lt;- subset(eurostat_data_sources_u[order(eurostat_data_sources_u$code),], type != &quot;folder&quot;)
 # Do we get the 23 rows that we expect?
 dim(eurostat_data_asyl_sorted)</code></pre>
-<pre><code>## [1] 23  8</code></pre>
+<pre><code>## [1] 24  8</code></pre>
 <pre class="r"><code>kable(eurostat_data_asyl_sorted, title=&quot;Eurostat Data Sources on Asylum&quot;)</code></pre>
 <table>
 <thead>
@@ -199,6 +231,16 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
+<td align="left">Final decisions on applications by citizenship, age and sex Annual data (rounded)</td>
+<td align="left">migr_asydcfina</td>
+<td align="left">dataset</td>
+<td align="left">26.04.2017</td>
+<td align="left">25.01.2017</td>
+<td align="left">2008</td>
+<td align="left">2016</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
 <td align="left">First instance decisions on applications by citizenship, age and sex Annual aggregated data (rounded)</td>
 <td align="left">migr_asydcfsta</td>
 <td align="left">dataset</td>
@@ -208,7 +250,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">First instance decisions on applications by citizenship, age and sex Quarterly data (rounded)</td>
 <td align="left">migr_asydcfstq</td>
 <td align="left">dataset</td>
@@ -218,7 +260,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2017Q1</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Decisions on asylum applications by citizenship till December 2007 Monthly data (rounded)</td>
 <td align="left">migr_asydctzm</td>
 <td align="left">dataset</td>
@@ -228,7 +270,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2007M12</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Decisions on asylum applications by citizenship till 2007 Annual data (rounded)</td>
 <td align="left">migr_asydctzy</td>
 <td align="left">dataset</td>
@@ -238,7 +280,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2007</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Persons subject of asylum applications pending at the end of the month by citizenship, age and sex Monthly data (rounded)</td>
 <td align="left">migr_asypenctzm</td>
 <td align="left">dataset</td>
@@ -248,7 +290,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2017M03</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Resettled persons by age, sex and citizenship Annual data (rounded)</td>
 <td align="left">migr_asyresa</td>
 <td align="left">dataset</td>
@@ -258,7 +300,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Asylum applicants considered to be unaccompanied minors by citizenship, age and sex Annual data (rounded)</td>
 <td align="left">migr_asyunaa</td>
 <td align="left">dataset</td>
@@ -268,7 +310,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Decisions withdrawing status granted as final decision by type of status withdrawn Annual data (rounded)</td>
 <td align="left">migr_asywitfina</td>
 <td align="left">dataset</td>
@@ -278,7 +320,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Decisions withdrawing status granted at first instance decision by type of status withdrawn and by citizenship Annual aggregated data (rounded)</td>
 <td align="left">migr_asywitfsta</td>
 <td align="left">dataset</td>
@@ -288,7 +330,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Decisions withdrawing status granted at first instance decision by type of status withdrawn and by citizenship Quarterly data (rounded)</td>
 <td align="left">migr_asywitfstq</td>
 <td align="left">dataset</td>
@@ -298,7 +340,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2017Q1</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Asylum applications withdrawn by citizenship, age and sex Annual aggregated data (rounded)</td>
 <td align="left">migr_asywitha</td>
 <td align="left">dataset</td>
@@ -308,7 +350,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Asylum applications withdrawn by citizenship, age and sex Monthly data (rounded)</td>
 <td align="left">migr_asywithm</td>
 <td align="left">dataset</td>
@@ -318,7 +360,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2017M03</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Asylum and first time asylum applicants - monthly data (rounded)</td>
 <td align="left">tps00189</td>
 <td align="left">table</td>
@@ -328,7 +370,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2017M03</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Persons subject of asylum applications pending at the end of the month - monthly data</td>
 <td align="left">tps00190</td>
 <td align="left">table</td>
@@ -338,7 +380,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2017M03</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Asylum and first time asylum applicants - annual aggregated data (rounded)</td>
 <td align="left">tps00191</td>
 <td align="left">table</td>
@@ -348,7 +390,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">First instance decisions on asylum applications by type of decision - annual aggregated data</td>
 <td align="left">tps00192</td>
 <td align="left">table</td>
@@ -358,7 +400,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Final decisions on asylum applications - annual data</td>
 <td align="left">tps00193</td>
 <td align="left">table</td>
@@ -368,7 +410,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Asylum applicants considered to be unaccompanied minors - annual data</td>
 <td align="left">tps00194</td>
 <td align="left">table</td>
@@ -378,7 +420,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Resettled persons - annual data</td>
 <td align="left">tps00195</td>
 <td align="left">table</td>
@@ -391,39 +433,8 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 </tbody>
 </table>
 <p>Some of these are big. Unfortunately, the “values” column isn’t filled the number of lines. It can be seen when looking the table up in the browser, as in <a href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfstq&amp;lang=en" class="uri">http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfstq&amp;lang=en</a> and then choosing the “information” icon <a href="http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/NodeInfoServices?lang=en&amp;code=migr_asydcfstq" class="uri">http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/NodeInfoServices?lang=en&amp;code=migr_asydcfstq</a></p>
-<p>Our main sources are:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Dataset Code</th>
-<th>Dataset Shortname</th>
-<th>Number of values as of May 2017</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>migr_asyappctza</td>
-<td>applications, annual</td>
-<td>3’033’853</td>
-</tr>
-<tr class="even">
-<td>migr_asyappctzm</td>
-<td>applications, monthly</td>
-<td>37’833’549</td>
-</tr>
-<tr class="odd">
-<td>migr_asydcfstq</td>
-<td>First instance decisions, quarterly</td>
-<td>46’153’986</td>
-</tr>
-<tr class="even">
-<td>migr_asydcfsta</td>
-<td>First instance decisions, annual</td>
-<td>11’163’156</td>
-</tr>
-</tbody>
-</table>
-<p>For deeper background information, go to pages like <a href="http://ec.europa.eu/eurostat/cache/metadata/en/migr_asyapp_esms.htm" class="uri">http://ec.europa.eu/eurostat/cache/metadata/en/migr_asyapp_esms.htm</a></p>
+<p>For details and background information, go to pages like <a href="http://ec.europa.eu/eurostat/cache/metadata/en/migr_asyapp_esms.htm" class="uri">http://ec.europa.eu/eurostat/cache/metadata/en/migr_asyapp_esms.htm</a></p>
+<p>There are more sources on “Dublin” cases.</p>
 </div>
 
 
