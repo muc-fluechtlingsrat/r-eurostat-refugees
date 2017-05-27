@@ -33,7 +33,7 @@ load_data_applications_api <- function() {
 }
 
 load_data_acceptance_api <- function() {
-  get_eurostat("migr_asydcfstq", time_format = "date") %>% label_eurostat() %>%
+  get_eurostat("migr_asydcfstq", time_format = "date") %>%
     mutate(decision = ifelse(decision == "Total positive decisions",
                              "Total_positive_decisions",
                              decision)) %>%
