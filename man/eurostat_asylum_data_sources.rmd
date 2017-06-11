@@ -13,12 +13,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 First, you want to know which eurostat dataset or table to use. Our main sources are:
 
-Dataset Code            | Dataset Shortname                   | Number of values as of May 2017
-------------------------| ------------------------------------|----------------------------------
- migr_asyappctza        | applications, annual                |                         3'033'853
- migr_asyappctzm        | applications, monthly               |                        37'833'549
- migr_asydcfstq         | First instance decisions, quarterly |                        46'153'986
- migr_asydcfsta         | First instance decisions, annual    |                        11'163'156
+Dataset Code            | Dataset Shortname                   | Number of values as of May 2017   | size as of May 2017
+------------------------| ------------------------------------|-----------------------------------|-------------------- 
+ migr_asyappctza        | applications, annual                |                         3'033'853 |
+ migr_asyappctzm        | applications, monthly               |                        37'833'549 |
+ migr_asydcfstq         | First instance decisions, quarterly |                        46'153'986 | 8.7 MB
+ migr_asydcfsta         | First instance decisions, annual    |                        11'163'156 | 5.3 MB
  
 
 How do you find all the eurostat sources on asylum? First, you can download it the native way from http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=dic%2Fde%2Ftable_dic.dic. This is also useful to double check if you found all the relevant sources.7
