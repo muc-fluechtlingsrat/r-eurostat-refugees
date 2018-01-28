@@ -13,13 +13,14 @@ This is a package, and a rstudio project, based on https://github.com/rOpenGov/e
 To know which eurostat data source to use, check out http://htmlpreview.github.io/?https://github.com/muc-fluechtlingsrat/r-eurostat-refugees/blob/master/man/eurostat_asylum_data_sources.html
 
 Let's work with the annual data, migr_asydcfsta, and go through the steps slowly.
-1. load data: 
+1. load data into R, run in your console: 
 
-    decisions_firstinstance_annual=get_eurostat("migr_asydcfsta", time_format = "date") 
+> decisions_firstinstance_annual=get_eurostat("migr_asydcfsta", time_format = "date") 
+
 Have a look at the data in rstudio or plain r respectively: 
 
-    View(decisions_firstinstance_annual)
-    str(decisions_firstinstance_annual)
+> View(decisions_firstinstance_annual)
+> str(decisions_firstinstance_annual)
 
 2. Clean data
 
