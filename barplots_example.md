@@ -15,7 +15,8 @@ agg_sy=aggregate(de_sy_migr_asyappctza_df$value ~ de_sy_migr_asyappctza_df$time,
 ### barplot by sex, and age
 
 bar_sy_de_sex <- ggplot(de_sy_migr_asyappctza, aes(x=time, y=values, fill=sex)) + geom_bar(stat="identity", position="dodge")  + scale_y_continuous(labels=comma) + scale_x_date() + ggtitle("Asylanträge von syrischen Staatsangehörigen, in Deutschland, nach Geschlecht") + xlab("Jahr") + ylab("Anzahl Asylanträge")
-bar_sy_de_sex + theme_light()
+bar_sy_de_sex + scale_fill_discrete() + theme_light()
+
 #### For plot per age, change order
 de_sy_migr_asyappctza$age <- factor(de_sy_migr_asyappctza$age, levels=c("Y_GE65","Y35-64","Y18-34","Y14-17","Y_LT14","UNK"))
 bar_sy_de_age <- ggplot(de_sy_migr_asyappctza, aes(x=time, y=values, fill=age)) + geom_bar(stat="identity")  + scale_y_continuous(labels=comma) + scale_x_date() + ggtitle("Asylanträge von syrischen Staatsangehörigen, in Deutschland, nach Alter") + xlab("Jahr") + ylab("Anzahl Asylanträge")
