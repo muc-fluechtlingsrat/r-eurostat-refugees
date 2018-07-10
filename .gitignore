@@ -2,3 +2,4 @@
 .RData
 .Ruserdata
 data/*.gz
+data/*.csv
