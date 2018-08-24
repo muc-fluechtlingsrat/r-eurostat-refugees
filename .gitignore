@@ -3,3 +3,4 @@
 .Ruserdata
 data/*.gz
 data/*.csv
+data/*.rds
