@@ -128,11 +128,18 @@ $(document).ready(function () {
 <h2>Eurostat Asylum Data Sources</h2>
 <p>First, you want to know which eurostat dataset or table to use. Our main sources are:</p>
 <table>
+<colgroup>
+<col width="21%"></col>
+<col width="31%"></col>
+<col width="30%"></col>
+<col width="17%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th>Dataset Code</th>
 <th>Dataset Shortname</th>
 <th>Number of values as of May 2017</th>
+<th>size as of May 2017</th>
 </tr>
 </thead>
 <tbody>
@@ -140,21 +147,25 @@ $(document).ready(function () {
 <td>migr_asyappctza</td>
 <td>applications, annual</td>
 <td>3’033’853</td>
+<td></td>
 </tr>
 <tr class="even">
 <td>migr_asyappctzm</td>
 <td>applications, monthly</td>
 <td>37’833’549</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td>migr_asydcfstq</td>
 <td>First instance decisions, quarterly</td>
 <td>46’153’986</td>
+<td>8.7 MB</td>
 </tr>
 <tr class="even">
 <td>migr_asydcfsta</td>
 <td>First instance decisions, annual</td>
 <td>11’163’156</td>
+<td>5.3 MB</td>
 </tr>
 </tbody>
 </table>
@@ -174,7 +185,7 @@ eurostat_data_sources_u &lt;- unique.data.frame(eurostat_data_sources)
 eurostat_data_asyl_sorted &lt;- subset(eurostat_data_sources_u[order(eurostat_data_sources_u$code),], type != &quot;folder&quot;)
 # Do we get the 23 rows that we expect?
 dim(eurostat_data_asyl_sorted)</code></pre>
-<pre><code>## [1] 24  8</code></pre>
+<pre><code>## [1] 25  8</code></pre>
 <pre class="r"><code>kable(eurostat_data_asyl_sorted, title=&quot;Eurostat Data Sources on Asylum&quot;)</code></pre>
 <table>
 <thead>
@@ -194,20 +205,20 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">Asylum and first time asylum applicants by citizenship, age and sex Annual aggregated data (rounded)</td>
 <td align="left">migr_asyappctza</td>
 <td align="left">dataset</td>
-<td align="left">26.04.2017</td>
-<td align="left">25.01.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2014</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">Asylum and first time asylum applicants by citizenship, age and sex Monthly data (rounded)</td>
 <td align="left">migr_asyappctzm</td>
 <td align="left">dataset</td>
-<td align="left">26.05.2017</td>
-<td align="left">07.04.2017</td>
+<td align="left">14.08.2018</td>
+<td align="left">14.08.2018</td>
 <td align="left">2008M01</td>
-<td align="left">2017M03</td>
+<td align="left">2016M12</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
@@ -215,7 +226,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">migr_asyctz</td>
 <td align="left">dataset</td>
 <td align="left">13.11.2009</td>
-<td align="left">08.05.2015</td>
+<td align="left">18.05.2018</td>
 <td align="left">1985</td>
 <td align="left">2007</td>
 <td align="left">NA</td>
@@ -225,7 +236,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">migr_asyctzm</td>
 <td align="left">dataset</td>
 <td align="left">26.03.2009</td>
-<td align="left">08.05.2015</td>
+<td align="left">18.05.2018</td>
 <td align="left">1999M01</td>
 <td align="left">2007M12</td>
 <td align="left">NA</td>
@@ -234,18 +245,18 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">Final decisions on applications by citizenship, age and sex Annual data (rounded)</td>
 <td align="left">migr_asydcfina</td>
 <td align="left">dataset</td>
-<td align="left">26.04.2017</td>
-<td align="left">25.01.2017</td>
+<td align="left">13.06.2018</td>
+<td align="left">05.03.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2017</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">First instance decisions on applications by citizenship, age and sex Annual aggregated data (rounded)</td>
 <td align="left">migr_asydcfsta</td>
 <td align="left">dataset</td>
-<td align="left">26.04.2017</td>
-<td align="left">25.01.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008</td>
 <td align="left">2016</td>
 <td align="left">NA</td>
@@ -254,10 +265,10 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">First instance decisions on applications by citizenship, age and sex Quarterly data (rounded)</td>
 <td align="left">migr_asydcfstq</td>
 <td align="left">dataset</td>
-<td align="left">26.05.2017</td>
-<td align="left">19.04.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008Q1</td>
-<td align="left">2017Q1</td>
+<td align="left">2016Q4</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
@@ -265,7 +276,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">migr_asydctzm</td>
 <td align="left">dataset</td>
 <td align="left">04.08.2009</td>
-<td align="left">12.05.2015</td>
+<td align="left">17.07.2017</td>
 <td align="left">2002M01</td>
 <td align="left">2007M12</td>
 <td align="left">NA</td>
@@ -275,7 +286,7 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">migr_asydctzy</td>
 <td align="left">dataset</td>
 <td align="left">26.03.2009</td>
-<td align="left">12.05.2015</td>
+<td align="left">17.07.2017</td>
 <td align="left">1999</td>
 <td align="left">2007</td>
 <td align="left">NA</td>
@@ -284,48 +295,48 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">Persons subject of asylum applications pending at the end of the month by citizenship, age and sex Monthly data (rounded)</td>
 <td align="left">migr_asypenctzm</td>
 <td align="left">dataset</td>
-<td align="left">26.05.2017</td>
-<td align="left">07.04.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008M01</td>
-<td align="left">2017M03</td>
+<td align="left">2016M12</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">Resettled persons by age, sex and citizenship Annual data (rounded)</td>
 <td align="left">migr_asyresa</td>
 <td align="left">dataset</td>
-<td align="left">26.04.2017</td>
-<td align="left">26.04.2017</td>
+<td align="left">30.05.2018</td>
+<td align="left">18.04.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2017</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">Asylum applicants considered to be unaccompanied minors by citizenship, age and sex Annual data (rounded)</td>
 <td align="left">migr_asyunaa</td>
 <td align="left">dataset</td>
-<td align="left">03.05.2017</td>
-<td align="left">25.01.2017</td>
+<td align="left">16.05.2018</td>
+<td align="left">05.03.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2017</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">Decisions withdrawing status granted as final decision by type of status withdrawn Annual data (rounded)</td>
 <td align="left">migr_asywitfina</td>
 <td align="left">dataset</td>
-<td align="left">07.04.2017</td>
-<td align="left">25.01.2017</td>
+<td align="left">13.04.2018</td>
+<td align="left">02.03.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2017</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">Decisions withdrawing status granted at first instance decision by type of status withdrawn and by citizenship Annual aggregated data (rounded)</td>
 <td align="left">migr_asywitfsta</td>
 <td align="left">dataset</td>
-<td align="left">29.03.2017</td>
-<td align="left">03.03.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008</td>
 <td align="left">2016</td>
 <td align="left">NA</td>
@@ -334,100 +345,110 @@ dim(eurostat_data_asyl_sorted)</code></pre>
 <td align="left">Decisions withdrawing status granted at first instance decision by type of status withdrawn and by citizenship Quarterly data (rounded)</td>
 <td align="left">migr_asywitfstq</td>
 <td align="left">dataset</td>
-<td align="left">26.05.2017</td>
-<td align="left">19.04.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008Q1</td>
-<td align="left">2017Q1</td>
+<td align="left">2016Q4</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">Asylum applications withdrawn by citizenship, age and sex Annual aggregated data (rounded)</td>
 <td align="left">migr_asywitha</td>
 <td align="left">dataset</td>
-<td align="left">26.04.2017</td>
-<td align="left">25.01.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2013</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">Asylum applications withdrawn by citizenship, age and sex Monthly data (rounded)</td>
 <td align="left">migr_asywithm</td>
 <td align="left">dataset</td>
-<td align="left">26.05.2017</td>
-<td align="left">07.04.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008M01</td>
-<td align="left">2017M03</td>
+<td align="left">2013M12</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">Asylum applications by state of procedure</td>
+<td align="left">sdg_10_60</td>
+<td align="left">table</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
+<td align="left">2008</td>
+<td align="left">2016</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
 <td align="left">Asylum and first time asylum applicants - monthly data (rounded)</td>
 <td align="left">tps00189</td>
 <td align="left">table</td>
-<td align="left">26.05.2017</td>
-<td align="left">26.05.2017</td>
-<td align="left">2016M04</td>
-<td align="left">2017M03</td>
+<td align="left">14.08.2018</td>
+<td align="left">14.08.2018</td>
+<td align="left">2014M12</td>
+<td align="left">2016M12</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Persons subject of asylum applications pending at the end of the month - monthly data</td>
 <td align="left">tps00190</td>
 <td align="left">table</td>
-<td align="left">26.05.2017</td>
-<td align="left">26.05.2017</td>
-<td align="left">2016M04</td>
-<td align="left">2017M03</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
+<td align="left">2016M01</td>
+<td align="left">2016M12</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Asylum and first time asylum applicants - annual aggregated data (rounded)</td>
 <td align="left">tps00191</td>
 <td align="left">table</td>
-<td align="left">10.05.2017</td>
-<td align="left">10.05.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2014</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">First instance decisions on asylum applications by type of decision - annual aggregated data</td>
 <td align="left">tps00192</td>
 <td align="left">table</td>
-<td align="left">10.05.2017</td>
-<td align="left">10.05.2017</td>
-<td align="left">2008</td>
-<td align="left">2016</td>
-<td align="left">NA</td>
-</tr>
-<tr class="even">
-<td align="left">Final decisions on asylum applications - annual data</td>
-<td align="left">tps00193</td>
-<td align="left">table</td>
-<td align="left">10.05.2017</td>
-<td align="left">10.05.2017</td>
+<td align="left">13.08.2018</td>
+<td align="left">13.08.2018</td>
 <td align="left">2008</td>
 <td align="left">2016</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">Asylum applicants considered to be unaccompanied minors - annual data</td>
-<td align="left">tps00194</td>
+<td align="left">Final decisions on asylum applications - annual data</td>
+<td align="left">tps00193</td>
 <td align="left">table</td>
-<td align="left">10.05.2017</td>
-<td align="left">10.05.2017</td>
+<td align="left">01.08.2018</td>
+<td align="left">01.08.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2017</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">Asylum applicants considered to be unaccompanied minors - annual data</td>
+<td align="left">tps00194</td>
+<td align="left">table</td>
+<td align="left">01.08.2018</td>
+<td align="left">01.08.2018</td>
+<td align="left">2008</td>
+<td align="left">2017</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
 <td align="left">Resettled persons - annual data</td>
 <td align="left">tps00195</td>
 <td align="left">table</td>
-<td align="left">10.05.2017</td>
-<td align="left">10.05.2017</td>
+<td align="left">01.08.2018</td>
+<td align="left">01.08.2018</td>
 <td align="left">2008</td>
-<td align="left">2016</td>
+<td align="left">2017</td>
 <td align="left">NA</td>
 </tr>
 </tbody>
