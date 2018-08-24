@@ -1,7 +1,9 @@
 # Example with pure eurostat. 
-library(eurostat)
-library(ggplot)
-library(scales)
+
+    library(eurostat)
+    library(ggplot2)
+    library(scales)
+
 ### get data
 migr_asyappctza=get_eurostat("migr_asyappctza")
 ### inspect data
