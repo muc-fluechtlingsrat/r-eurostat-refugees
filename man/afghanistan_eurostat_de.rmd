@@ -1,0 +1,118 @@
+---
+title: "Fokus Afganistan: Die Daten von Eurostat"
+author: "ynux"
+date: "August, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+### Fokus Afghanistan, with Eurostat Data
+
+Lasst uns einen Blick auf die Erstentscheidungen von den afghanishen Flüchtlingen in Europa werfen.
+
+Das bedeutet das wir das Datenset 'migr_asydcfsta' benützen: "Erstentscheidungen auf Anträge sortiert nach Land, Alter und Geschlecht, jährlich erzeugten Daten (gerundet)." Bemerkung Eins: Für Deutschland sind das die Entscheidungen von dem Bundesamt für Flüchtlinge und Migration (Bamf). Nicht zu verwechseln mit "erster Instanz" in dem Rechtssystem, was das Verwaltungsgericht sein würde. Bemerkung Zwei: Es gibt auch vierteljährliche Daten, die wir später durchgehen
+
+Die Daten deken die Jahre 2008 bis 2017 (Stand August 2018). Es ist ziemlich groß - 85 Mb und 13.311.070 Werte. Dieses auf meinem ziemlich starken Computer zu laden dauert ein paar Minuten. Wir starten mit einem reduzierten Datenset, das mit dem folgenden Code herausgeholt und gespeichert wurde:
+
+    library(eurostat)
+    migr_asydcfsta=get_eurostat("migr_asydcfsta")
+    saveRDS(migr_asydcfsta, file="/tmp/migr_asydcfsta_20180812.rds")
+
+Die Daten decken die 32 europäischen Staaten ('geo'). Manche haben nicht genug Daten, um damit nützliche Analysen zu machen. Last uns diese ignorieren.
+
+Im Code darunter reduzieren wir die Daten auf
+   * Nur alle Altersgruppen und alle Geschlechter
+   * Nur Afghanistan
+   * Für jetzt nur 2017
+   * Nur europäische Staaten mit mindestens 500 Entscheidungen in dem Jahr
+   * only columns of interest
+
+
+```{r get_data, echo=FALSE, results="hide"}
+library(knitr)
+library(dplyr)
+migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
+```
+
+Last uns einen kurzen Blick auf das werfen, was wir bereits schon haben.
+```{r look_at_full_data}
+# The first few rows:
+glimpse(migr_asydcfsta)
+# Some first statistics, also showing the categories (sex, age, decisions):
+summary(migr_asydcfsta)
+```
+Dies ist zu viel Information. Lasst uns dies reduzieren:
+```{r reduce_data_total}
+cutoff=3000
+major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,values) %>%
+  arrange(desc(values))
+```
+
+### Ein erster Blick in die Daten
+    
+```{r look_at_major_total}
+# Die ersten paar Spalten
+View(major_geo_total)
+```
+
+### Reduzierung auf die in den Entscheidungen relevanten Staaten
+
+OK, das ist das, womit wir arbeiten werden.
+
+Die erste Frage ist: Wie viel Information haben wir verloren, indem wir die Staaten mit weniger als 500 Entscheidungen ignoriert haben? 
+
+Als ich mir die Daten pro Staat angeschaut habe, war ich überrascht. 2017 gab es 15 Länder mit mehr als 1000 Entscheidungen über Asylanträge von afghanischen Flüchtlingen. Die restlichen 17 Staaten sind nur für 580 Entscheidungen verantwortlich.
+
+Es gab insgesammt 184.265 Entscheidungen.
+
+```{r other_geo_total}
+    other_geo_total=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others <- sum(other_geo_total$values)
+```
+
+Wenn du das nicht glaubst, gut. Mistrauen in Daten ist gut. Du kannst es dir bei [eurostat migr_asydcfsta]( http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfsta&lang=en/) anschauen.
+Unsere wichtigen Staaten sind:
+```{r show_major_geo_total}
+View(major_geo_total)
+```
+Dies sind die Ländercodes. Die Ländercoes können [hier](http://dd.eionet.europa.eu/vocabulary/eurostat/geo/view) gefunden werden. Normallereweise ist es möglich, die Codes mit label_eurostat zu bekommen, aber es hat anscheinend neuerdings Probleme. xxx do this part later xxx
+xxx XX is the rest xxx
+xxx no Spain, no 
+
+## Kuchen der europäischen Staaten, Entscheidungen 2017 der Asylanträge Afghanistan
+
+```{r geo_decision_pie}
+library(ggplot2)
+# some technical workarounds for adding the row with the others (XX),
+# and for sorting
+major_geo_total$geo <- as.character(major_geo_total$geo)
+all_geo_total <- rbind(major_geo_total, c("XX",dec_others))
+all_geo_total$values <- as.numeric(all_geo_total$values) 
+all_geo_total$geo <- factor(all_geo_total$geo, levels = arrange(all_geo_total, values)$geo)
+
+geo_dec_pie <- ggplot(all_geo_total, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle ("Decisions on Afghan asylum Cases 2017", subtitle = "EU countries")
+geo_dec_pie
+```
+
+```{r show_values_table}
+View(major_geo_total)
+
+```
+xxx compare population of these EU countries? histogram xxx
+
+## Die Entscheidungen: GENCONV + HUMSTAT + SUB_PROT + TEMP_PROT + REJECTED = TOTAL_POS + REJECTED = TOTAL
+
+Nun, wie haben die 15 Länder 2017 entschieden? Wir haben im vorherigen Schritt zu sehr reduziert, wir brauchen alle Entscheidungen und nicht nur TOTAL.
+
+```{r reduce_data}
+major_geo <-filter(migr_asydcfsta, values > cutoff, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,decision,values) %>%
+  arrange(desc(values))
+
+dec_bar <- ggplot(filter(major_geo, decision != "TOTAL")) + geom_col(aes(x=geo, y=values, fill=decision), colour="black") + scale_fill_grey()
+dec_bar
+```
