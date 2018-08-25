@@ -1,5 +1,5 @@
 ---
-title: "focus_afghanistan_eurostat"
+title: "Eurostat: First Decisions on Afghanistan (2017)"
 author: "ynux"
 date: "August, 2018"
 output: html_document
@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
-### Fokus Afghanistan, with Eurostat Data
+### Focus Afghanistan, with Eurostat Data
 
 Let's have a look at first decisions on asylum requests from Afghan citizens, in Europe. 
 
@@ -42,12 +42,18 @@ Let's have a quick look at what we have.
 ```{r look_at_full_data}
 # The first few rows:
 glimpse(migr_asydcfsta)
-# Some first statistics, also showing the categories (sex, age, decisions):
-summary(migr_asydcfsta)
+# A look at the structure of our data, also showing the categories (sex, age, decisions):
+str(migr_asydcfsta)
 ```
+The important stuff is:
+* geo: The EU country
+* citizen: The applicant's citizenship, in our case, Afghanistan
+* decision: The first decision on the application
+* time: in our case, 2017
+
 This is too much information. Let's reduce it:
 ```{r reduce_data_total}
-cutoff=3000
+cutoff=1000
 major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
   select(geo,values) %>%
   arrange(desc(values))
@@ -56,8 +62,8 @@ major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", de
 ### A first look into the data
     
 ```{r look_at_major_total}
-# The first few rows
-View(major_geo_total)
+
+major_geo_total
 ```
 
 ### Reducing to the relevant deciding countries
@@ -66,23 +72,38 @@ OK, this is what we'll be working with.
 
 The first question is: How much information did we lose when ignoring countries with less than 500 decisions? 
 
-Looking at the number of decisions per country brought the first surprise for me. In 2017, there were 15 countries with more than 1000 decisions on asylum application from Afghan citizens. All other 17 countries account for only 18972 decisions. (If you cut off at 1000 decisions, it's only 580)
+Looking at the number of decisions per country brought the first surprise for me. In 2017, there were 15 countries with more than 1000 decisions on asylum application from Afghan citizens. All other 17 countries account for only 580 decisions.
 
-In total there were 184'265 decisions. 
+In total there were 184'265 decisions on Afghanistan in 2017. 
 
 ```{r other_geo_total}
-    other_geo_total=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
-dec_others <- sum(other_geo_total$values)
+other_geo_total=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% select(values)
+dec_others_total <- sum(other_geo_total$values)
+dec_others_total
 ```
 
 If you don't believe this, great. Lack of trust in data is a good thing. You can look it up at [eurostat migr_asydcfsta]( http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfsta&lang=en/)
-Our relevant countries are now:
-```{r show_major_geo_total}
-View(major_geo_total)
+
+<!-- 
+(We use the country codes. The country labels can be found [here](http://dd.eionet.europa.eu/vocabulary/eurostat/geo/view). Normally, it's possible to get the labels with label_eurostat or get_eurostat dic, but there seems to be an issue with this presently. xxx do this part later ? get_eurostat_dic("geo")
+Error in open.connection(con, "rb") : cannot open the connection xxx )
+https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&downfile=dic%2Fde%2Fgeo.dic
+
+You can find the full names of the countries here 
+https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Country_codes/de   (German version)
+https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Country_codes (English version)
+-->
+### Lookup Table for Country Codes
+
+Download geo.dic from https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&downfile=dic%2Fde%2Fgeo.dic
+
+```{r country_codes}
+geodic = read.delim(file = "/tmp/geo.dic", col.names = c("code","label"))
+geo_migr_asydcfsta = levels(migr_asydcfsta$geo)
+geodic %>% filter(code %in% geo_migr_asydcfsta)
 ```
-These are the country codes. The country labels can be found [here](http://dd.eionet.europa.eu/vocabulary/eurostat/geo/view). Normally, it's possible to get the labels with label_eurostat, but there seems to be an issue with this presently. xxx do this part later xxx
-xxx XX is the rest xxx
-xxx no Spain, no 
+
+
 
 ## Pie of European Countries, decisions in 2017 on asylum cases Afghanistan
 
@@ -91,29 +112,89 @@ library(ggplot2)
 # some technical workarounds for adding the row with the others (XX),
 # and for sorting
 major_geo_total$geo <- as.character(major_geo_total$geo)
-all_geo_total <- rbind(major_geo_total, c("XX",dec_others))
+all_geo_total <- rbind(major_geo_total, c("XX",dec_others_total))
 all_geo_total$values <- as.numeric(all_geo_total$values) 
 all_geo_total$geo <- factor(all_geo_total$geo, levels = arrange(all_geo_total, values)$geo)
 
-geo_dec_pie <- ggplot(all_geo_total, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle ("Decisions on Afghan asylum Cases 2017", subtitle = "EU countries")
-geo_dec_pie
+geo_dec_pie <- ggplot(all_geo_total, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle ("Decisions on Afghan asylum Cases 2017", subtitle = "EU countries with a high enough number of decisions; XX is the rest") 
+geo_dec_pie + theme_bw() 
 ```
 
 ```{r show_values_table}
-View(major_geo_total)
+major_geo_total
 
 ```
-xxx compare population of these EU countries? histogram xxx
+
+Germany had by far the most decisions on Afghanistan in 2017. It is also the most populous country. How does it's share of decisions compare to it's share of the population?
+
+For this, we need the eurostat data set `demo_pjan`:
+
+     demo_pjan <- get_eurostat(demo_pjan)
+     saveRDS(demo_pjan, file = "/tmp/demo_pjan_20180825.rds")
+     
+```{r population_decisions}
+demo_pjan <- readRDS(file="/tmp/demo_pjan_20180825.rds")
+compare_dec=filter(migr_asydcfsta, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% select(geo, values) %>% mutate( stat = "dec")
+compare_dec <- droplevels(compare_dec)
+compare_pop <- demo_pjan %>% filter(age == "TOTAL" & sex == "T" & time == "2017-01-01" & geo %in% levels(compare_dec$geo)) %>% select(geo, values) %>% mutate( stat = "pop")
+compare_pop <- droplevels(compare_pop)
+# divide population by 1000, otherwise decisions won't be visible
+compare_pop <- mutate(compare_pop, values = values / 1000)
+compare_dec_pop <- rbind(compare_dec, compare_pop)
+```
+
+Now, the histogram - only for EU countries with a population over 8 mio :
+```{r compare_dec_pop}
+drop_countries_comp <- filter(compare_pop, values < 8000 & stat == "pop") %>% select(geo)
+# population first, decisions second
+compare_dec_pop$stat <- factor(compare_dec_pop$stat, levels=c("pop","dec"))
+# sort by pop 
+compare_dec_pop$geo <- factor(compare_dec_pop$geo, levels = arrange(filter(compare_dec_pop, stat == "pop"), desc(values))$geo)
+
+bar_compare_dec_pop <- ggplot(filter(compare_dec_pop, !geo %in% unlist(drop_countries_comp)),  aes(x=geo, y=values, fill=stat)) + geom_bar(stat="identity", position="dodge") + theme_bw() + theme(legend.position="bottom") + scale_fill_grey(start = 0.4, end = 0.7)
+
+bar_compare_dec_pop + theme_bw() + theme(legend.position="bottom")
+```
+
+
+xxx 2015, 2016? xxx
+
 
 ## The Decisions: GENCONV + HUMSTAT + SUB_PROT + TEMP_PROT + REJECTED = TOTAL_POS + REJECTED = TOTAL
 
 Now, how did our 15 countries decide in 2017? We reduced too much in the previous step, we need all the decisions now, not only the TOTAL.
 
-```{r reduce_data}
+```{r reduce_hist_data}
 major_geo <-filter(migr_asydcfsta, values > cutoff, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
-  select(geo,decision,values) %>%
-  arrange(desc(values))
+  select(geo,decision,values) 
+major_geo$geo <- factor(major_geo$geo, levels = arrange(filter(major_geo, decision == "TOTAL"), desc(values))$geo)
+# bring decisions into correct order
+major_geo$decision <- factor(major_geo$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+# define grey palette
+dec_palette_grey=c("#000000","#C0C0C0","#D3D3D3","#E4E4E4","#E8E8E8","#C8C8C8","#808080")
 
-dec_bar <- ggplot(filter(major_geo, decision != "TOTAL")) + geom_col(aes(x=geo, y=values, fill=decision), colour="black") + scale_fill_grey()
-dec_bar
+dec_bar <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw()
 ```
+
+looking at the percentages:
+
+```{r fill_hist}
+dec_bar_fill <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), colour="black", position="fill") + scale_fill_grey() + theme_bw()
+dec_bar_fill
+```
+
+Analysis: 
+
+* DE takes care to keep POS below 50% (Bleibeperspektive)
+* SE more negativ than expected
+* AT no surprise
+* FR, BE more positive 
+real surprise: The "small countries" - remember it's still over 1000 decisions:
+* CH, EL IT let all stay
+* UK, NL, HU, BG, DK refuse all
+Does this look like a proper asylum procedure? Like "it doesn't matter where in the EU you apply for asylum"?
+
+Next questions:
+* Is the picture (number and result of decisions) similar for SY? Eritrea? TOTAL?
+* Deportations? We barely have numbers from DE ... 
