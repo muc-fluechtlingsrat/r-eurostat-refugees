@@ -54,9 +54,10 @@ The important stuff is:
 This is too much information. Let's reduce it:
 ```{r reduce_data_total}
 cutoff=1000
-major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
+major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28") %>% 
   select(geo,values) %>%
   arrange(desc(values))
+cutoff
 ```
 
 ### A first look into the data
@@ -64,6 +65,8 @@ major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", de
 ```{r look_at_major_total}
 
 major_geo_total
+# we kept TOTAL only to include it in this view
+major_geo_total <- filter(major_geo_total, geo != "TOTAL")
 ```
 
 ### Reducing to the relevant deciding countries
@@ -115,9 +118,14 @@ major_geo_total$geo <- as.character(major_geo_total$geo)
 all_geo_total <- rbind(major_geo_total, c("XX",dec_others_total))
 all_geo_total$values <- as.numeric(all_geo_total$values) 
 all_geo_total$geo <- factor(all_geo_total$geo, levels = arrange(all_geo_total, values)$geo)
+# Labels only for the biggest pie pieces
+big = 8
+blables <- c(rev(levels(all_geo_total$geo))[c(1:big)],rep("",dim(all_geo_total)[1]-big))
+y.breaks <- cumsum(all_geo_total$values) - all_geo_total$values/2
 
 geo_dec_pie <- ggplot(all_geo_total, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle ("Decisions on Afghan asylum Cases 2017", subtitle = "EU countries with a high enough number of decisions; XX is the rest") 
-geo_dec_pie + theme_bw() 
+geo_dec_pie + theme_bw() + theme(axis.title=element_blank()) + scale_y_continuous(labels=blables, breaks = y.breaks)
+
 ```
 
 ```{r show_values_table}
@@ -153,7 +161,7 @@ compare_dec_pop$geo <- factor(compare_dec_pop$geo, levels = arrange(filter(compa
 
 bar_compare_dec_pop <- ggplot(filter(compare_dec_pop, !geo %in% unlist(drop_countries_comp)),  aes(x=geo, y=values, fill=stat)) + geom_bar(stat="identity", position="dodge") + theme_bw() + theme(legend.position="bottom") + scale_fill_grey(start = 0.4, end = 0.7)
 
-bar_compare_dec_pop + theme_bw() + theme(legend.position="bottom")
+bar_compare_dec_pop 
 ```
 
 
@@ -162,10 +170,11 @@ xxx 2015, 2016? xxx
 
 ## The Decisions: GENCONV + HUMSTAT + SUB_PROT + TEMP_PROT + REJECTED = TOTAL_POS + REJECTED = TOTAL
 
+
 Now, how did our 15 countries decide in 2017? We reduced too much in the previous step, we need all the decisions now, not only the TOTAL.
 
 ```{r reduce_hist_data}
-major_geo <-filter(migr_asydcfsta, values > cutoff, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
+major_geo <-filter(migr_asydcfsta, geo %in% major_geo_total$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
   select(geo,decision,values) 
 major_geo$geo <- factor(major_geo$geo, levels = arrange(filter(major_geo, decision == "TOTAL"), desc(values))$geo)
 # bring decisions into correct order
@@ -174,15 +183,23 @@ major_geo$decision <- factor(major_geo$decision, levels=c("REJECTED","TEMP_PROT"
 dec_palette_grey=c("#000000","#C0C0C0","#D3D3D3","#E4E4E4","#E8E8E8","#C8C8C8","#808080")
 
 dec_bar <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
-dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw()
+dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom")
 ```
 
 looking at the percentages:
 
 ```{r fill_hist}
-dec_bar_fill <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), colour="black", position="fill") + scale_fill_grey() + theme_bw()
+dec_bar_fill <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom")
 dec_bar_fill
 ```
+
+To decypher the decision codes, download the decision dictionary from https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=dic%2Fde%2Fdecision.dic
+
+```{r decision_dic}
+decision.dic <- read.delim(file = "/tmp/decision.dic", col.names = c("code","label"))
+filter(decision.dic, code %in% levels(major_geo$decision))
+```
+
 
 Analysis: 
 
