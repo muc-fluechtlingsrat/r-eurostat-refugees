@@ -1,4 +1,4 @@
-data# r-eurostat-refugees cheat sheet
+# r-eurostat-refugees cheat sheet
 
 Some hints at how to use eurostatasyl
 
@@ -29,10 +29,14 @@ acc_data = load_data_acceptance_file('/Users/suny/r-eurostat-refugees/data/data_
 
 This will load 8.6 MB / 45 mio values and look like
 
-2. Have a look at the data
+2. Have a look at the structure of the data
 
 ```{r}
 str(acc_data)
+```
+Have a look at the data itself:
+```{r}
+View(acc_data)
 ```
 
 to see all Countries of Origin:
