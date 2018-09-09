@@ -1,5 +1,5 @@
 ---
-title: "Fokus Afganistan: Die Daten von Eurostat"
+title: "Asylentscheidungen in Europa"
 author: "ynux"
 date: "August, 2018"
 output: html_document
@@ -9,25 +9,28 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
-### Fokus Afghanistan, with Eurostat Data
+### Die Asyldaten von EurostatÃ¼
+In diesem Artikel werfen wir einen Blick auf die Erstentscheidungen von den afghanischen Fl?chtlingen in Europa.
 
-Lasst uns einen Blick auf die Erstentscheidungen von den afghanishen Flüchtlingen in Europa werfen.
+Eurostat ist das statistische Amt der EuropÃ¤ischen Union. Es sammelt und verÃ¶ffentlicht Daten zu vielen Themen, auch zu Asyl und Migration.
 
-Das bedeutet das wir das Datenset 'migr_asydcfsta' benützen: "Erstentscheidungen auf Anträge sortiert nach Land, Alter und Geschlecht, jährlich erzeugten Daten (gerundet)." Bemerkung Eins: Für Deutschland sind das die Entscheidungen von dem Bundesamt für Flüchtlinge und Migration (Bamf). Nicht zu verwechseln mit "erster Instanz" in dem Rechtssystem, was das Verwaltungsgericht sein würde. Bemerkung Zwei: Es gibt auch vierteljährliche Daten, die wir später durchgehen
+Besonders interessant sind die Erstentscheidungsdaten. Das Datenset trÃ¤gt den hÃ¼bschen Namen `migr_asydcfsta`: "Erstinstanzliche Entscheidungen Ã¼ber AsylantrÃ¤ge nach StaatsangehÃ¶rigkeit, Alter und Geschlecht JÃ¤hrliche aggregierte Daten".
 
-Die Daten deken die Jahre 2008 bis 2017 (Stand August 2018). Es ist ziemlich groß - 85 Mb und 13.311.070 Werte. Dieses auf meinem ziemlich starken Computer zu laden dauert ein paar Minuten. Wir starten mit einem reduzierten Datenset, das mit dem folgenden Code herausgeholt und gespeichert wurde:
+FÃ¼r Deutschland sind das die Entscheidungen des Bundesamts fÃ¼r  Migration und FlÃ¼chtlinge (BAMF). Die Bezeichnung "erstinstanzlich" ist hier etwas verwirrend, denn die erste juristische Instanz ist hier das Verwaltungsgericht, dass Ã¼ber Klagen gegen die Entscheidung des BAMF entscheidet.
+
+ZurÃ¼ck zu unseren Daten. Sie decken die Jahre 2008 bis 2017 ab (Stand August 2018). Sie sind ziemlich groÃŸ - 85 Mb und 13 Millionen Werte. Ich lade sie mit  Wir starten mit einem reduzierten Datenset, das mit dem folgenden Code herausgeholt und gespeichert wurde:
 
     library(eurostat)
     migr_asydcfsta=get_eurostat("migr_asydcfsta")
     saveRDS(migr_asydcfsta, file="/tmp/migr_asydcfsta_20180812.rds")
 
-Die Daten decken die 32 europäischen Staaten ('geo'). Manche haben nicht genug Daten, um damit nützliche Analysen zu machen. Last uns diese ignorieren.
+Die Daten decken die 32 europ?ischen Staaten ('geo'). Manche haben nicht genug Daten, um damit n?tzliche Analysen zu machen. Last uns diese ignorieren.
 
 Im Code darunter reduzieren wir die Daten auf
    * Nur alle Altersgruppen und alle Geschlechter
    * Nur Afghanistan
-   * Für jetzt nur 2017
-   * Nur europäische Staaten mit mindestens 500 Entscheidungen in dem Jahr
+   * F?r jetzt nur 2017
+   * Nur europ?ische Staaten mit mindestens 500 Entscheidungen in dem Jahr
    * only columns of interest
 
 
@@ -65,7 +68,7 @@ OK, das ist das, womit wir arbeiten werden.
 
 Die erste Frage ist: Wie viel Information haben wir verloren, indem wir die Staaten mit weniger als 500 Entscheidungen ignoriert haben? 
 
-Als ich mir die Daten pro Staat angeschaut habe, war ich überrascht. 2017 gab es 15 Länder mit mehr als 1000 Entscheidungen über Asylanträge von afghanischen Flüchtlingen. Die restlichen 17 Staaten sind nur für 580 Entscheidungen verantwortlich.
+Als ich mir die Daten pro Staat angeschaut habe, war ich ?berrascht. 2017 gab es 15 L?nder mit mehr als 1000 Entscheidungen ?ber Asylantr?ge von afghanischen Fl?chtlingen. Die restlichen 17 Staaten sind nur f?r 580 Entscheidungen verantwortlich.
 
 Es gab insgesammt 184.265 Entscheidungen.
 
@@ -79,11 +82,11 @@ Unsere wichtigen Staaten sind:
 ```{r show_major_geo_total}
 View(major_geo_total)
 ```
-Dies sind die Ländercodes. Die Ländercoes können [hier](http://dd.eionet.europa.eu/vocabulary/eurostat/geo/view) gefunden werden. Normallereweise ist es möglich, die Codes mit label_eurostat zu bekommen, aber es hat anscheinend neuerdings Probleme. xxx do this part later xxx
+Dies sind die L?ndercodes. Die L?ndercoes k?nnen [hier](http://dd.eionet.europa.eu/vocabulary/eurostat/geo/view) gefunden werden. Normallereweise ist es m?glich, die Codes mit label_eurostat zu bekommen, aber es hat anscheinend neuerdings Probleme. xxx do this part later xxx
 xxx XX is the rest xxx
 xxx no Spain, no 
 
-## Kuchen der europäischen Staaten, Entscheidungen 2017 der Asylanträge Afghanistan
+## Kuchen der europ?ischen Staaten, Entscheidungen 2017 der Asylantr?ge Afghanistan
 
 ```{r geo_decision_pie}
 library(ggplot2)
@@ -106,7 +109,7 @@ xxx compare population of these EU countries? histogram xxx
 
 ## Die Entscheidungen: GENCONV + HUMSTAT + SUB_PROT + TEMP_PROT + REJECTED = TOTAL_POS + REJECTED = TOTAL
 
-Nun, wie haben die 15 Länder 2017 entschieden? Wir haben im vorherigen Schritt zu sehr reduziert, wir brauchen alle Entscheidungen und nicht nur TOTAL.
+Nun, wie haben die 15 L?nder 2017 entschieden? Wir haben im vorherigen Schritt zu sehr reduziert, wir brauchen alle Entscheidungen und nicht nur TOTAL.
 
 ```{r reduce_data}
 major_geo <-filter(migr_asydcfsta, values > cutoff, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 

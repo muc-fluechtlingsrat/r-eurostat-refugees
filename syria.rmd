@@ -1,0 +1,90 @@
+---
+title: "Eurostat: Anträge aus Syrien in Deutschland, nach Alter und Geschlecht"
+author: "refugee datathon munich"
+date: "August, 2018"
+output: pdf_document
+---
+
+# Beispiel für eine Eurostat-Analyse mit R
+### Asylanträge syrischer Staatsangehöriger in Deutschland
+
+Zuerst werden Bibliotheken geladen, um Eurostat-Daten zu holen und ansprechende Visualisierungen zu erzeugen.
+```{r knitr, echo=FALSE, results="hide"}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+```
+```{r libraries, message=FALSE}
+library(eurostat)
+library(dplyr)
+library(ggplot2)
+library(scales)
+```
+
+Nun holen wir die Daten direkt von Eurostat. Dafür brauchen wir nur den Namen des Datensets.
+
+```{r get_inspect_reduce_data}
+#migr_asyappctza=get_eurostat("migr_asyappctza")
+# oder, falls es bereits vorbereitend gesichert wurde:
+migr_asyappctza = readRDS(file = "/tmp/migr_asyappctza_20180824.rds")
+```
+Ein erster Blick in die Daten:
+```{r migr_asyappctza_angucken}
+glimpse(migr_asyappctza)
+```
+
+Wir reduzieren das auf:
+
+    1. Anträge syrischer Staatsangehöriger
+    2. Anträge in Deutschland
+    3. nur Anträge vom Typ "ASY_APP" 
+    4. keine Totale bezüglich Geschlecht und Alter, und 
+    5. keine sich überschneidenden Altersklassen
+    
+Die letzten drei Punkte beheben Mehrfachzählungen. Für die Übersichtlichkeit beschränken wir uns außerdem auf Spalten von Interesse.
+
+```{r syria_dataset}
+de_sy_migr_asyappctza <- subset(migr_asyappctza, 
+                                citizen == "SY" & 
+                                  asyl_app == "ASY_APP" & 
+                                  geo == "DE" & 
+                                  sex != "T" & 
+                                  age != "Y_LT18" & 
+                                  age != "TOTAL")[c(2,4,7:8)]
+```
+Jetzt sieht es schon besser aus:
+```{r de_sy_migr_asyappctza_angucken}
+glimpse(de_sy_migr_asyappctza)
+```
+
+Für die Visualisierung kommt das Paket `ggplot` zum Einsatz. 
+
+```{r barplot_syria_applications_sex}
+
+bar_sy_de_sex <- ggplot(de_sy_migr_asyappctza, aes(x=time, y=values, fill=sex)) + 
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=comma) + 
+  scale_x_date() + 
+  ggtitle("Asylanträge von syrischen Staatsangehörigen",
+          subtitle="In Deutschland, nach Geschlecht") + 
+  xlab("Jahr") + 
+  ylab("Anzahl Asylanträge")
+bar_sy_de_sex + scale_fill_discrete() + theme_light()
+
+```
+
+Die Altersklassen können wir auch so darstellen. Allerdings müssen wir die Reihenfolge festlegen, damit sie aufsteigend erscheinen.
+
+```{r barplot_syria_applications_age}
+de_sy_migr_asyappctza$age <- factor(de_sy_migr_asyappctza$age,
+                                    levels=c("Y_GE65","Y35-64",
+                                             "Y18-34","Y14-17","Y_LT14","UNK"))
+bar_sy_de_age <- ggplot(de_sy_migr_asyappctza, aes(x=time, y=values, fill=age)) + 
+  geom_bar(stat="identity") + 
+  scale_y_continuous(labels=comma) + 
+  scale_x_date() + 
+  ggtitle("Asylanträge von syrischen Staatsangehörigen",  
+          subtitle="In Deutschland, nach Alter") + 
+  xlab("Jahr") + 
+  ylab("Anzahl Asylanträge")
+bar_sy_de_age + scale_fill_brewer() + theme_light()
+```
+
