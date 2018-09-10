@@ -1,3 +1,5 @@
 data/*.rds filter=lfs diff=lfs merge=lfs -text
 data/eritrea_decision_major_eucountries_20170426.csv filter=lfs diff=lfs merge=lfs -text
 data/eritrea_decision_major_eucountries_20170427.csv filter=lfs diff=lfs merge=lfs -text
+data/migr_asydcfsta.csv filter=lfs diff=lfs merge=lfs -text
+data/*.csv filter=lfs diff=lfs merge=lfs -text
