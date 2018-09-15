@@ -10,11 +10,9 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
 ### Die Asyldaten von Eurostat
-In diesem Artikel werfen wir einen Blick auf die Erstentscheidungen von den afghanischen Fü?chtlingen in Europa.
+Dieser Artikel untersucht die Erstentscheidungen von afghanischen Fü?chtlingen in Europa mit Hilfe von Eurostat. Eurostat ist das statistische Amt der Europäischen Union. Es sammelt und veröffentlicht Daten zu vielen Themen, unter anderem zu Asyl und Migration (link xxx)
 
-Eurostat ist das statistische Amt der Europäischen Union. Es sammelt und veröffentlicht Daten zu vielen Themen, auch zu Asyl und Migration.
-
-Besonders interessant sind die Erstentscheidungsdaten. Das Datenset trägt den hübschen Namen `migr_asydcfsta`: "Erstinstanzliche Entscheidungen über Asylanträge nach Staatsangehörigkeit, Alter und Geschlecht Jährliche aggregierte Daten".
+Besonders interessant sind die Erstentscheidungsdaten. Das Datenset dafür nennt sich migr_asydcfsta`: "Erstinstanzliche Entscheidungen über Asylanträge nach Staatsangehörigkeit, Alter und Geschlecht; jährliche aggregierte Daten".
 
 Für Deutschland sind das die Entscheidungen des Bundesamts für  Migration und Flüchtlinge (BAMF). Die Bezeichnung "erstinstanzlich" ist hier etwas verwirrend, denn die erste _juristische_ Instanz ist in Deutschland das Verwaltungsgericht, dass über Klagen gegen die Entscheidung des BAMF entscheidet.
 
@@ -155,19 +153,73 @@ dec_bar_fill <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTA
 dec_bar_fill
 ```
 
+## Interpretation der Daten
+
+#### Die Anerkennungsquote in Deutschland liegt knapp unter 50%. Zufall? Ich glaube, nicht.
+
+In Deutschland liegt die Anerkennungsquote knapp unter 50%. Das hat negative Folgen für alle Asylsuchenden aus Afghanistan, denn dadurch gelten sie als Menschen mit schlechter Bleibeperspektive. Das BAMF beschreibt das so (http://www.bamf.de/SharedDocs/FAQ/DE/IntegrationskurseAsylbewerber/001-bleibeperspektive.html):
+
+> Menschen, die aus Herkunftsländern mit einer Schutzquote von über 50 Prozent kommen, haben eine gute Bleibeperspektive. 2017 trifft dies auf die Herkunftsländer Eritrea, Irak, Iran, Syrien und Somalia zu. Welche Herkunftsländer das Kriterium Schutzquote (>/= 50 %) erfüllen, wird halbjährlich festgelegt.
+
+Also wird über jeden Asylantrag aus Afghanistan einzeln und unabhängig entschieden, und am Ende jedes halben Jahres stellt sich jedes Mal heraus, dass die Anerkennungsquote knapp unter 50% liegt ... bei xxx Anträgen ... Schwer zu glauben.
+
+Bei schlechter Bleibeperspektive ist die Integration erwschwert, während des Asylverfahrens gibt es keine Integrationskurse und keine Maßnahmen zur Arbeitsförederung. Wie lange dauert ein Asylverfahren? Laut der neuesten [Kleinen Anfrage "Ergänzende Informationen zur Asylstatistiki"](https://kleineanfragen.de/bundestag/19/3861-ergaenzende-informationen-zur-asylstatistik-fuer-das-erste-und-zweite-quartal-2018-schwerpunktfragen-zur ) allgemein etwa 9 Monate, bei Anträgen aus Afghanistan allerdings über 13 Monate. 
+
+[Pro Asyl](https://www.proasyl.de/news/die-einstufung-nach-bleibeperspektive-ist-bewusste-integrationsverhinderung/) kritisiert das Konzept der Bleibeperspektive grundsätzlich:
+
+Diese Regelung ist übrigens kein Gesetz, sondern eine [Auslegung](https://www.proasyl.de/wp-content/uploads/2015/12/161202-BAMF-Vermerk-Gute-Bleibeperspektive_Integrationskurszugang-v2-6....pdf) des BAMF. Für Menschen, denen ein aufgeklärter Umgang mit Zahlen wichtig ist, ist besonders ärgerlich, dass das BAMF die Anerkennungsquote konsequent falsch berechnet. xxx.
+>  
+xxx
+Anzahl Anträge
+Entwicklung
+Dauer Asylanträge
+Wann ist Stichtag? 1.1. und 1.6.?
+
+#### Ein Vergleich mit anderen Ländern Europas
+
+Wie ist die Anerkennungsquote in anderen Ländern Europas? Das ist wichtig. Das europäische Asylsystem basiert darauf, dass es keine Rolle spielt, in welchem Land jemand seinen Asylantrag stellt. Die Dublin-Abkommen setzen das auch voraus.
+
+## Ist Afghanistan eine Ausnahme? Sind die Anerkennungsquoten anderer Länder ähnlicher?
+ 
+* anderes Land, eins mit hoher, eins mit niedriger Anerkkenungsquote? Syrien, 
+
+
+#### Mehr Politik als Rechtsstaatlichkeit
+
+* Schweden
+
+#### Jenseits der Zahlen
+
+Bis zu diesem Punkt habe ich den Artikel eher trocken gehalten, juristisch und zahlenorientiert. Abschließend möchte ich doch noch einige persönliche Anmerkungen loswerden.
+
+Die jungen Männer, die ich in der Unterkunft treffe, sind immer wieder im Stich gelassen und verraten worden. Von ihrem Geburtsland Afghanistan, in dem 25% (?) der Kinder arbeiten, nur xx % zur Schule gehen und diese Schulen offensichtlich schlecht sind. Vom Iran, der die afghanischen Flüchtlinge entrechtet und in den Krieg nach Syrien schickt (link). Von Deutschland, das sie in einem ganz ungesunden Schwebezustand hält, dem Abschreckung wichtiger ist als die Integration, und als rechtsstaatliche Prinzipien. Von der EU, die es nicht schafft, sich auf eine konsistente und sinnvolle gemeinsame Asylpolitik im Sinne der Genfer Flüchtlingskonvention zu einigen. Von der internationalen Staatengemeinschaft, die keinen Umgang mit den "Fragile States" findet. Alle Staaten, alle internationalen Organisation, alle Gesellschaften sind an ihrer Aufgabe gescheitert, diesen Leuten einen Rahmen zu bieten, in dem sie so leben können, wie es im 21. Jahrhundert üblich ist: Mit Ausbildung und Perspektive auf ein ganz normales Leben mit Familie und Arbeit. 
+
+Es ist zum Verrücktwerden. Im Großen ist dagegen nicht anzukommen. Jede und jeder, die oder der hier Lesen und Schreiben lernt, oder es sogar schafft, sich ein gutes Leben aufzubauen, ist ein Triumph über diese Zustände.
+
+### xxx Persönliche Ansicht
+
+    * Afghanistan ist schwierig weil fragile state, dafür wurde das Asylrecht nicht gemacht
+    * Die Praxis hat weniger mit Recht zu tun als mit Kalkül: Abschrecken, aber nicht zu viele Skandale provozieren. Das heißt: 
+    * Abschreckung, (1) indem man den Leuten die Perspektive nimmt (Anerkennungsquote unter 50%, weniger Integration, Ablehnungen); (2) Abschiebungen - regelmäßig, aber nicht viele.
+    * Denn sonst würden sich die Fälle häufen, dass Abgeschobene sterben, und das will man auch nicht
+    * zugleich Behauptung, dass das alles Kriminelle sind - stimmt nicht 
+
+Mieses Spiel. Und gefährlich, viele junge Leute ohne Perspektive in D. Die internationale Gemeinschaft soll sich mal systematisch Gedanken drüber machen, wie sie mit den failed states umgeht.
+Nicht alles "Schuld von Deutschland". Afghanistan, Iran haben diese Leute auch verraten
+
 ### Ab hier nur Notizen
 
 Analysis: 
 
-* DE takes care to keep POS below 50% (Bleibeperspektive)
 * FR, CH, EL, IT clearly more positive 
 * BG very negative - still 1388 decisions
+* SE switched midway, monthly data?
  
 Does this look like "it doesn't matter where in the EU you apply for asylum"?
 
 Next questions:
 
-* Is the picture (number and result of decisions) similar for SY? Eritrea? Pakistan? TOTAL? (should be simple)
+* Is the picture (number and result of decisions) similar for SY? Eritrea? Pakistan? TOTAL? TOTAL-Afgh? (should be simple)
 * years 2015, 2016 (simple), 2018 (quarterly data)
 * Deportations? We barely have numbers from DE ... probably no way (only Dublin numbers. bpb has sth on https://www.bpb.de/gesellschaft/migration/flucht/218788/zahlen-zu-asyl-in-deutschland)
 
@@ -175,9 +227,43 @@ Content to add:
 
 * Bleibeperspektive
 * Situation in Afghanistan (UNAMA - Zahlen, fragile state index)
-* Abschiebungen
 * Warum verschiedene Quoten in der EU ein Problem sind, Dublin
 * Verwaltungsgerichtsentscheide 
 * Some remarks on refugee datathon muc
+* Lagebericht: evtl. https://www.proasyl.de/news/meinungsstark-aber-faktenarm-abschiebepolitik-zu-afghanistan/
+
+* Abschiebungen ... nicht so mein Gebiet. Nach Bundesland schon unterschiedlich, vgl. http://www.taz.de/!5526441/ oder 
+Quellen: 
+https://www.amnesty.org/download/Documents/ASA1168662017ENGLISH.PDF
+Sie verweisen auf Eurostat und IOM Afghanistan (T. Ruttig verweist auch aufs IOM: https://thruttig.wordpress.com/2017/07/15/abschiebungen-nach-afghanistan-europaweit-2017-eine-ubersicht/)
+
+Eurostat:
+migr_eirtn
+
+
+    Third country nationals returned following an order to leave by citizenship age and sex - quarterly data (rounded) 
+    migr_eirtn1
+    only 8 countries, incl. Germany
+    only 2018Q1, 2018Q2
+
+    Third-country nationals who have left the territory by type of return and citizenship
+migr_eirt_vol
+    no data from Germany
+    only 12 countries 
+
+    Third-country nationals who have left the territory by type of assistance received and citizenship
+migr_eirt_ass
+    Similar to migr_eirt_vol
+
+    Third-country nationals who have left the territory to a third country by type of agreement procedure and citizenship
+migr_eirt_agr
+    17 countries, I do not understand the agreements
+
+    Third-country nationals who have left the territory to a third country by destination country and citizenship
+migr_eirt_des
+    
+
+
+
 
 Code ist hier: https://github.com/muc-fluechtlingsrat/r-eurostat-refugees/blob/master/man/afghanistan_eurostat_nontech.rmd
