@@ -70,10 +70,10 @@ kable(geodic_major, caption = "Ländercodes der wichtigsten Antragsländer")
 
 Diese Zahlen sind für mich schon überraschend. Die anderen 17 Länder sind zusammen für weniger als 600 Entscheidungen verantwortlich.
 
-```{r other_geo_total,  echo=FALSE}
-    other_geo_total=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
-dec_others_total <- sum(other_geo_total$values)
-dec_others_total
+```{r other_geo_total_af,  echo=FALSE}
+    other_geo_total_af=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others_total_af <- sum(other_geo_total_af$values)
+dec_others_total_af
 ```
 
 Eine Visualisierung der Gesamtanzahl von Entscheidungen zu Afghanistan im Jahr 2017:
@@ -155,7 +155,9 @@ dec_bar_fill
 
 ## Interpretation der Daten
 
-#### Die Anerkennungsquote in Deutschland liegt knapp unter 50%. Zufall? Ich glaube, nicht.
+### Herkunftsland: Afghanistan
+
+#### Deutschland: Die Anerkennungsquote in Deutschland liegt knapp unter 50%. Zufall? Ich glaube, nicht.
 
 In Deutschland liegt die Anerkennungsquote knapp unter 50%. Das hat negative Folgen für alle Asylsuchenden aus Afghanistan, denn dadurch gelten sie als Menschen mit schlechter Bleibeperspektive. Das BAMF beschreibt das so (http://www.bamf.de/SharedDocs/FAQ/DE/IntegrationskurseAsylbewerber/001-bleibeperspektive.html):
 
@@ -191,7 +193,11 @@ Wie ist die Anerkennungsquote in anderen Ländern Europas? Das ist wichtig. Das 
 #### Jenseits der Zahlen
 
 Bis zu diesem Punkt habe ich den Artikel eher trocken gehalten, juristisch und zahlenorientiert. Abschließend möchte ich doch noch einige persönliche Anmerkungen loswerden.
+--- 
 
+
+
+--- oder
 Die jungen Männer, die ich in der Unterkunft treffe, sind immer wieder im Stich gelassen und verraten worden. Von ihrem Geburtsland Afghanistan, in dem 25% (?) der Kinder arbeiten, nur xx % zur Schule gehen und diese Schulen offensichtlich schlecht sind. Vom Iran, der die afghanischen Flüchtlinge entrechtet und in den Krieg nach Syrien schickt (link). Von Deutschland, das sie in einem ganz ungesunden Schwebezustand hält, dem Abschreckung wichtiger ist als die Integration, und als rechtsstaatliche Prinzipien. Von der EU, die es nicht schafft, sich auf eine konsistente und sinnvolle gemeinsame Asylpolitik im Sinne der Genfer Flüchtlingskonvention zu einigen. Von der internationalen Staatengemeinschaft, die keinen Umgang mit den "Fragile States" findet. Alle Staaten, alle internationalen Organisation, alle Gesellschaften sind an ihrer Aufgabe gescheitert, diesen Leuten einen Rahmen zu bieten, in dem sie so leben können, wie es im 21. Jahrhundert üblich ist: Mit Ausbildung und Perspektive auf ein ganz normales Leben mit Familie und Arbeit. 
 
 Es ist zum Verrücktwerden. Im Großen ist dagegen nicht anzukommen. Jede und jeder, die oder der hier Lesen und Schreiben lernt, oder es sogar schafft, sich ein gutes Leben aufzubauen, ist ein Triumph über diese Zustände.

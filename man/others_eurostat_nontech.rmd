@@ -1,5 +1,5 @@
 ---
-title: "Plots and Analysis around the Article Asylentscheidungen in Europa" 
+title: "Asylentscheidungen in Europa: Syrien und Pakistan" 
 author: "ynux"
 date: "August, 2018"
 output: pdf_document
@@ -11,9 +11,9 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
 ### Plots und Analysen zum Artikel"
 
-Andere Länder, andere Aspekte 
+Hauptartikel ist "Aylsentscheidungen in Europa, Fokus Afghanistan". Dies gehört zu den ergänzenden Analysen.
 
-#### Dieselbe Analyse wie für Afghanistan für Syrien, Pakistan, Türkei, Somalia, Nigeria, TOTAL
+
 
 ```{r get_data, echo=FALSE}
 library(knitr)
@@ -21,7 +21,7 @@ library(dplyr)
 migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
 ```
 
-##### Syrien
+### Syrien
 
 ```{r reduce_data_total_sy}
 cutoff=1000
@@ -38,9 +38,11 @@ Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als `cutoff` Ent
 ```{r look_at_major_total_sy,echo=FALSE}
 library(knitr)
 # Die ersten paar Spalten
-kable(major_geo_total_sy[order("values"),], caption = paste("Länder mit mehr als ", cutoff, " Entscheidungen zu Asylanträgen aus ", COUNTRY ))
+kable(major_geo_total_sy[(-major_geo_total_sy$values),], caption = paste("Länder mit mehr als ", cutoff, " Entscheidungen zu Asylanträgen aus ", COUNTRY ))
 major_geo_total_sy <- filter(major_geo_total_sy, geo != "TOTAL")
 ```
+
+Anzahl der Entscheidungen in Ländern mit weniger als `r cutoff` Entscheidungen - die werden im Folgenden vernachlässigt:
 
 ```{r other_geo_total_sy,  echo=FALSE}
     other_geo_total_sy=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
@@ -66,7 +68,7 @@ geo_dec_pie_sy
 Ähnliches Bild wie Afghanistan: Deutschland hatte so viel mehr Entscheidungen, dass es schwer vergleichbar ist
 
 ```{r reduce_data_sy, echo = FALSE}
-major_geo_sy <-filter(migr_asydcfsta, geo %in% major_geo_total_sy$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "SY", geo != "EU28", geo != "TOTAL") %>% 
+major_geo_sy <-filter(migr_asydcfsta, geo %in% major_geo_total_sy$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>% 
   select(geo,decision,values) 
 major_geo_sy$geo <- factor(major_geo_sy$geo, levels = arrange(filter(major_geo_sy, decision == "TOTAL"), desc(values))$geo)
 # bring decisions into correct order
@@ -89,7 +91,7 @@ dec_bar_fill
 
 Ähnlicher als Afghanistan. Art der pos. Entscheidungen zeigen Unterschiede. Interpretation in den Ländern müsste man jetzt herausfinden.
 
-##### Pakistan
+### Pakistan
 
 ```{r reduce_data_total_pk}
 COUNTRY="Pakistan"
@@ -106,12 +108,14 @@ Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als `cut1off` En
 ```{r look_at_major_total,echo=FALSE}
 library(knitr)
 # Die ersten paar Spalten
-kable(major_geo_total_pk[order("values")], caption = paste("Länder mit mehr als ",cutoff, " Entscheidungen zu Asylanträgen aus " , COUNTRY))
+kable(major_geo_total_pk[order(-major_geo_total_pk$values),], caption = paste("Länder mit mehr als ",cutoff, " Entscheidungen zu Asylanträgen aus " , COUNTRY))
 major_geo_total_pk <- filter(major_geo_total_pk, geo != "TOTAL")
 ```
 
+Anzahl der Entscheidungen in Ländern mit weniger als `r cutoff` Entscheidungen - die werden im Folgenden vernachlässigt:
+
 ```{r other_geo_total_pk,  echo=FALSE}
-    other_geo_total_pk=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "PK", geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+    other_geo_total_pk=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
 dec_others_total_pk <- sum(other_geo_total_pk$values)
 dec_others_total_pk
 ```
@@ -133,7 +137,7 @@ geo_dec_pie_pk
 
 
 ```{r reduce_data_pk, echo = FALSE}
-major_geo_pk <-filter(migr_asydcfsta, geo %in% major_geo_total_pk$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "PK", geo != "EU28", geo != "TOTAL") %>% 
+major_geo_pk <-filter(migr_asydcfsta, geo %in% major_geo_total_pk$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>% 
   select(geo,decision,values) 
 major_geo_pk$geo <- factor(major_geo_pk$geo, levels = arrange(filter(major_geo_pk, decision == "TOTAL"), desc(values))$geo)
 # bring decisions into correct order
@@ -154,7 +158,6 @@ dec_bar_fill <- ggplot(filter(major_geo_pk, decision != "TOTAL" & decision != "T
 dec_bar_fill
 ```
 
-Ähnlicher als Afghanistan. Art der pos. Entscheidungen zeigen Unterschiede. Interpretation in den Ländern müsste man jetzt herausfinden.
 
 
 ## more plots
