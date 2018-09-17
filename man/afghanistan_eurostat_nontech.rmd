@@ -2,7 +2,7 @@
 title: "Asylentscheidungen in Europa"
 author: "ynux"
 date: "August, 2018"
-output: word_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -10,11 +10,11 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
 ### Die Asyldaten von Eurostat
-Dieser Artikel untersucht die Erstentscheidungen von afghanischen Fü?chtlingen in Europa mit Hilfe von Eurostat. Eurostat ist das statistische Amt der Europäischen Union. Es sammelt und veröffentlicht Daten zu vielen Themen, unter anderem zu Asyl und Migration (link xxx)
+Dieser Artikel untersucht die Erstentscheidungen von afghanischen Fü?chtlingen in Europa mit Hilfe von [Eurostat](https://ec.europa.eu/eurostat). Eurostat ist das statistische Amt der Europäischen Union. Es sammelt und veröffentlicht Daten zu vielen Themen, unter anderem zu Asyl und Migration.
 
-Besonders interessant sind die Erstentscheidungsdaten. Das Datenset dafür nennt sich migr_asydcfsta`: "Erstinstanzliche Entscheidungen über Asylanträge nach Staatsangehörigkeit, Alter und Geschlecht; jährliche aggregierte Daten".
+Besonders interessant sind die Erstentscheidungsdaten. Das Datenset dafür nennt sich migr_asydcfsta`: "Erstinstanzliche Entscheidungen über Asylanträge nach Staatsangehörigkeit, Alter und Geschlecht; jährliche aggregierte Daten". Eurostat bietet einen Datenexplorer, damit kann man diese Daten hier sehen: [http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfsta&lang=en](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asydcfsta&lang=en).
 
-Für Deutschland sind das die Entscheidungen des Bundesamts für  Migration und Flüchtlinge (BAMF). Die Bezeichnung "erstinstanzlich" ist hier etwas verwirrend, denn die erste _juristische_ Instanz ist in Deutschland das Verwaltungsgericht, dass über Klagen gegen die Entscheidung des BAMF entscheidet.
+Für Deutschland sind das die Entscheidungen des Bundesamts für  Migration und Flüchtlinge (BAMF). Die Bezeichnung "erstinstanzlich" ist hier etwas verwirrend, denn die erste _juristische_ Instanz ist in Deutschland das Verwaltungsgericht, dass über Klagen gegen die Entscheidung des BAMF entscheidet. Das bedeutet auch, dass ein Teil der hier dargestellten Entscheidungen von Gerichten aufgehoben werden.
 
 Zurück zu unseren Daten. Sie decken die Jahre 2008 bis 2017 ab (Stand August 2018). Man kann sie von der Website von Eurostat herunterladen. Allerdings sind sie sind ziemlich groß - 85 Mb und 13 Millionen Werte. Mit Excel kommt man da nicht weiter, deswegen benutzt dieser Artikel die Statistiksprache `R`. 
 
@@ -25,10 +25,18 @@ library(knitr)
 library(dplyr)
 migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
 # Ein Blick in die ersten Datensätze:
-kable(filter(migr_asydcfsta, citizen == "AF")[c(1:18),], caption = "Ein paar Zeilen aus dem Datensatz, zum Herkunftsland Afhganistan")
-# Die Struktur der Daten - hier sehen wir auch die Kategorien der Entscheidungen und der Altersklassen:
-#str(migr_asydcfsta)
+kable(filter(migr_asydcfsta, citizen == "AF")[c(1:8),], caption = "Ein paar Zeilen aus dem Datensatz, zum Herkunftsland Afhganistan")
 ```
+Um zu sehen, was sich damit machen lässt, gehen wir durch die Spalten.
+
+* `unit`: Uninteressant
+* `citizen`: Die Staatsangehörigkeit der Antragssteller/innen
+* `sex`: Kann folgende Werte annehmen: `r levels(migr_asydcfsta$sex)`
+* `age`: Kann folgende Werte annehmen: `r levels(migr_asydcfsta$age)`
+* `decision`: Kann folgende Werte annehmen: `r levels(migr_asydcfsta$decision)`
+* `geo`: Das europäische Land, in dem der Antrag gestellt wurde
+* `time`: Das Jahr
+* `values`: Die Anzahl Entscheidungen
 
 Wir konzentrieren uns im Folgenden auf:
 
@@ -83,7 +91,7 @@ library(ggplot2)
 # some technical workarounds for adding the row with the others (XX),
 # and for sorting
 major_geo_total$geo <- as.character(major_geo_total$geo)
-all_geo_total <- rbind(major_geo_total, c("XX",dec_others_total))
+all_geo_total <- rbind(major_geo_total, c("XX",dec_others_total_af))
 all_geo_total$values <- as.numeric(all_geo_total$values) 
 all_geo_total$geo <- factor(all_geo_total$geo, levels = arrange(all_geo_total, values)$geo)
 # For the labels
