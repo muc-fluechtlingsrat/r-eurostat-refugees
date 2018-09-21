@@ -1,0 +1,36 @@
+
+* Abschiebungen ... nicht so mein Gebiet. Nach Bundesland schon unterschiedlich, vgl. http://www.taz.de/!5526441/ oder 
+Quellen: 
+https://www.amnesty.org/download/Documents/ASA1168662017ENGLISH.PDF
+Sie verweisen auf Eurostat und IOM Afghanistan (T. Ruttig verweist auch aufs IOM: https://thruttig.wordpress.com/2017/07/15/abschiebungen-nach-afghanistan-europaweit-2017-eine-ubersicht/)
+
+Eurostat:
+migr_eirtn
+
+
+    Third country nationals returned following an order to leave by citizenship age and sex - quarterly data (rounded) 
+    migr_eirtn1
+    only 8 countries, incl. Germany
+    only 2018Q1, 2018Q2
+
+    Third-country nationals who have left the territory by type of return and citizenship
+migr_eirt_vol
+    no data from Germany
+    only 12 countries 
+
+    Third-country nationals who have left the territory by type of assistance received and citizenship
+migr_eirt_ass
+    Similar to migr_eirt_vol
+
+    Third-country nationals who have left the territory to a third country by type of agreement procedure and citizenship
+migr_eirt_agr
+    17 countries, I do not understand the agreements
+
+    Third-country nationals who have left the territory to a third country by destination country and citizenship
+migr_eirt_des
+    
+
+
+
+
+

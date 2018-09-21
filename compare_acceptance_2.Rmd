@@ -1,0 +1,39 @@
+# Eurostatasyl Example: Comparing the Acceptance Rates of Refugees from Eritrea Across European Countries
+
+You need rstudio and R.
+Clone this github project
+
+Open the project file ('\*.Rproj')
+Open file "import_packages.R" in R-Studio and run it to install and load all required packages (this is a workaround because I didn't get the package dependencies right)
+Build and reload the package eurostatasyl
+```
+library(eurostatasyl)
+```
+Now, we load the acceptance data from a file. This step takes some time, may be need too much memory and is skipped in this tutorial. 
+This is what you would do:
+Run the file compare_acceptance.R to set some variables (major 
+```
+data_acc <- readRDS("/full/path/to/r-eurostat-refugees/data/data_acceptance")
+data_eritrea <- data_acc %>% filter(citizen=="Eritrea")
+data_eritrea_major_decision_2016 <- data_eritrea%>%filter(citizen=="Eritrea",geo%in%major_countries_dest,decision%in%dec_acc_total,age=="Total",sex=="Total",year(.$time) == "2016")
+```
+We prepared this smaller dataset in the file ... , so you can start from here.
+
+> View(data_eritrea)
+> dim(data_eritrea)
+data_eritrea_major_decision_sum<-data_eritrea_major_decision%>%group_by(geo,decision)%>%summarise(sum_dec=sum(values))
+
+major_countries_origin=c("Afghanistan","Eritrea","Iran","Irak","Pakistan","Nigeria","Somalia","Syria")
+data_eritrea_major_decision <- subset(data_eritrea_major_decision, select=-c(sex,age,unit)
+
+
+
+
+major_countries_dest=c("Belgium","France","Germany (until 1990 former territory of the FRG)","Greece","Italy","Netherlands","Norway","Sweden","Spain","Switzerland","United Kingdom")
+
+decision_acc=c("Rejected", "Total positive decisions", "Total")
+
+mutate(decision = ifelse(decision == "Total positive decisions",
+                         "Total_positive_decisions",
+                         decision))
+
