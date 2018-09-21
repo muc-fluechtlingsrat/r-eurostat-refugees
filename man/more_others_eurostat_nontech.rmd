@@ -1,0 +1,295 @@
+---
+title: "Asylentscheidungen in Europa: Türkei, Somalia, Eritrea, Nigeria" 
+author: "ynux"
+date: "September 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+### Plots und Analysen 
+
+Hauptartikel ist "Aylsentscheidungen in Europa, Fokus Afghanistan". Dies gehört zu den ergänzenden Analysen.
+zweite Ergänzung.
+
+
+```{r get_data, echo=FALSE}
+library(knitr)
+library(dplyr)
+migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
+```
+
+### Türkei
+
+```{r reduce_data_total_tr}
+cutoff=500
+CODE="TR"
+COUNTRY="Türkei"
+major_geo_total_tr=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28") %>% 
+  select(geo,values) 
+```
+
+### Die Anzahl Entscheidungen pro Antragsland
+
+Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als `r cutoff` Entscheidungen über Asylanträge von Staatsangehörigen aus `r COUNTRY` getroffen wurden:
+    
+```{r look_at_major_total_tr,echo=FALSE}
+library(knitr)
+# Die ersten paar Spalten
+kable(major_geo_total_tr[(-major_geo_total_tr$values),], caption = paste("Länder mit mehr als ", cutoff, " Entscheidungen zu Asylanträgen aus ", COUNTRY ))
+major_geo_total_tr <- filter(major_geo_total_tr, geo != "TOTAL")
+```
+
+Anzahl der Entscheidungen in Ländern mit weniger als `r cutoff` Entscheidungen - die werden im Folgenden vernachlässigt:
+
+```{r other_geo_total_tr,  echo=FALSE}
+    other_geo_total_tr=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others_total_tr <- sum(other_geo_total_tr$values)
+dec_others_total_tr
+```
+
+Eine Visualisierung der Gesamtanzahl von Entscheidungen zu `r COUNTRY` im Jahr 2017:
+
+```{r plot_prepare, echo = FALSE}
+library(ggplot2)
+dec_palette_grey=c("#000000","#C0C0C0","#D3D3D3","#E4E4E4","#E8E8E8","#C8C8C8","#808080")
+```
+```{r geo_decision_pie_tr, echo = FALSE}
+
+# some technical workarounds for adding the row with the others (XX),
+# and for sorting
+major_geo_total_tr$geo <- as.character(major_geo_total_tr$geo)
+all_geo_total_tr <- rbind(major_geo_total_tr, c("XX",dec_others_total_tr))
+all_geo_total_tr$values <- as.numeric(all_geo_total_tr$values) 
+all_geo_total_tr$geo <- factor(all_geo_total_tr$geo, levels = arrange(all_geo_total_tr, values)$geo)
+# The real thing
+geo_dec_pie_tr <- ggplot(all_geo_total_tr, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle (paste("Entscheidungen über Asyl, ",COUNTRY,", 2017"), subtitle = paste("EU-Länder; XX ist die Summe aller Länder mit > ", cutoff, " Entscheidungen")) + theme_bw() + theme(axis.title=element_blank()) 
+geo_dec_pie_tr
+```
+
+
+```{r reduce_data_tr, echo = FALSE}
+major_geo_tr <-filter(migr_asydcfsta, geo %in% major_geo_total_tr$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,decision,values) 
+major_geo_tr$geo <- factor(major_geo_tr$geo, levels = arrange(filter(major_geo_tr, decision == "TOTAL"), desc(values))$geo)
+# bring decisions into correct order
+major_geo_tr$decision <- factor(major_geo_tr$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+
+```
+
+
+```{r decisions_abolut_tr, echo = FALSE}
+
+dec_bar <- ggplot(filter(major_geo_tr, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar + scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in absoluten Zahlen")
+```
+
+```{r fill_hist_tr, echo=FALSE}
+dec_bar_fill <- ggplot(filter(major_geo_tr, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
+dec_bar_fill
+```
+
+### Somalia
+
+```{r reduce_data_total_so}
+COUNTRY="Somalia"
+CODE="SO"
+cutoff=500
+major_geo_total_so=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28") %>% 
+  select(geo,values) 
+```
+
+### Die Anzahl Entscheidungen pro Antragsland
+
+Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als `r cutoff` Entscheidungen über Asylanträge vonStaatsangehörigen aus `r COUNTRY`getroffen wurden:
+    
+```{r look_at_major_total_so,echo=FALSE}
+library(knitr)
+kable(major_geo_total_so[order(-major_geo_total_so$values),], caption = paste("Länder mit mehr als ",cutoff, " Entscheidungen zu Asylanträgen aus " , COUNTRY))
+major_geo_total_so <- filter(major_geo_total_so, geo != "TOTAL")
+```
+
+Anzahl der Entscheidungen in Ländern mit weniger als `r cutoff` Entscheidungen - die werden im Folgenden vernachlässigt:
+
+```{r other_geo_total_so,  echo=FALSE}
+    other_geo_total_so=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others_total_so <- sum(other_geo_total_so$values)
+dec_others_total_so
+```
+
+Eine Visualisierung der Gesamtanzahl von Entscheidungen zu `r COUNTRY` im Jahr 2017:
+
+```{r geo_decision_pie_so, echo = FALSE}
+# some technical workarounds for adding the row with the others (XX),
+# and for sorting
+major_geo_total_so$geo <- as.character(major_geo_total_so$geo)
+all_geo_total_so <- rbind(major_geo_total_so, c("XX",dec_others_total_so))
+all_geo_total_so$values <- as.numeric(all_geo_total_so$values) 
+all_geo_total_so$geo <- factor(all_geo_total_so$geo, levels = arrange(all_geo_total_so, values)$geo)
+# The real thing
+geo_dec_pie_so <- ggplot(all_geo_total_so, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle(paste("Entscheidungen über Asyl, ",COUNTRY,  " , 2017"), subtitle = paste("EU-Länder; XX ist die Summe aller Länder mit > ",cutoff, " Entscheidungen")) + theme_bw() + theme(axis.title=element_blank()) 
+geo_dec_pie_so
+```
+
+
+```{r reduce_data_so, echo = FALSE}
+major_geo_so <-filter(migr_asydcfsta, geo %in% major_geo_total_so$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,decision,values) 
+major_geo_so$geo <- factor(major_geo_so$geo, levels = arrange(filter(major_geo_so, decision == "TOTAL"), desc(values))$geo)
+# bring decisions into correct order
+major_geo_so$decision <- factor(major_geo_so$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+
+```
+
+
+```{r decisions_abolut_so, echo = FALSE}
+
+dec_bar <- ggplot(filter(major_geo_so, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY,", 2017"), subtitle = "in absoluten Zahlen")
+```
+
+```{r fill_hist_so, echo=FALSE}
+dec_bar_fill <- ggplot(filter(major_geo_so, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
+dec_bar_fill
+```
+
+
+### Eritrea
+
+```{r reduce_data_total_er}
+COUNTRY="Eritrea"
+CODE="ER"
+cutoff=500
+major_geo_total_er=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28") %>% 
+  select(geo,values) 
+```
+
+### Die Anzahl Entscheidungen pro Antragsland
+
+Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als `r cutoff` Entscheidungen über Asylanträge von Staatsangehörigen aus `r COUNTRY` getroffen wurden:
+    
+```{r look_at_major_total_er,echo=FALSE}
+library(knitr)
+# Die ersten paar Spalten
+kable(major_geo_total_er[order(-major_geo_total_er$values),], caption = paste("Länder mit mehr als ",cutoff, " Entscheidungen zu Asylanträgen aus " , COUNTRY))
+major_geo_total_er <- filter(major_geo_total_er, geo != "TOTAL")
+```
+
+Anzahl der Entscheidungen in Ländern mit weniger als `r cutoff` Entscheidungen - die werden im Folgenden vernachlässigt:
+
+```{r other_geo_total_er,  echo=FALSE}
+    other_geo_total_er=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others_total_er <- sum(other_geo_total_er$values)
+dec_others_total_er
+```
+
+Eine Visualisierung der Gesamtanzahl von Entscheidungen zu `r COUNTRY` im Jahr 2017:
+
+```{r geo_decision_pie_er, echo = FALSE}
+# some technical workarounds for adding the row with the others (XX),
+# and for sorting
+major_geo_total_er$geo <- as.character(major_geo_total_er$geo)
+all_geo_total_er <- rbind(major_geo_total_er, c("XX",dec_others_total_er))
+all_geo_total_er$values <- as.numeric(all_geo_total_er$values) 
+all_geo_total_er$geo <- factor(all_geo_total_er$geo, levels = arrange(all_geo_total_er, values)$geo)
+# The real thing
+geo_dec_pie_er <- ggplot(all_geo_total_er, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle(paste("Entscheidungen über Asyl, ",COUNTRY,  " , 2017"), subtitle = paste("EU-Länder; XX ist die Summe aller Länder mit > ", cutoff, " Entscheidungen")) + theme_bw() + theme(axis.title=element_blank()) 
+geo_dec_pie_er
+```
+
+
+```{r reduce_data_er, echo = FALSE}
+major_geo_er <-filter(migr_asydcfsta, geo %in% major_geo_total_er$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,decision,values) 
+major_geo_er$geo <- factor(major_geo_er$geo, levels = arrange(filter(major_geo_er, decision == "TOTAL"), desc(values))$geo)
+# bring decisions into correct order
+major_geo_er$decision <- factor(major_geo_er$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+
+```
+
+
+```{r decisions_abolut_er, echo = FALSE}
+
+dec_bar <- ggplot(filter(major_geo_er, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY,", 2017"), subtitle = "in absoluten Zahlen")
+```
+
+```{r fill_hist_er, echo=FALSE}
+dec_bar_fill <- ggplot(filter(major_geo_er, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
+dec_bar_fill
+```
+
+
+
+
+### Nigeria
+
+```{r reduce_data_total_ng}
+COUNTRY="Nigeria"
+CODE="NG"
+cutoff=500
+major_geo_total_ng=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28") %>% 
+  select(geo,values) 
+```
+
+### Die Anzahl Entscheidungen pro Antragsland
+
+Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als `r cutoff` Entscheidungen über Asylanträge von Staatsangehörigen aus `r COUNTRY` getroffen wurden:
+    
+```{r look_at_major_total_ng,echo=FALSE}
+library(knitr)
+# Die ersten paar Spalten
+kable(major_geo_total_ng[order(-major_geo_total_ng$values),], caption = paste("Länder mit mehr als ",cutoff, " Entscheidungen zu Asylanträgen aus " , COUNTRY))
+major_geo_total_ng <- filter(major_geo_total_ng, geo != "TOTAL")
+```
+
+Anzahl der Entscheidungen in Ländern mit weniger als `r cutoff` Entscheidungen - die werden im Folgenden vernachlässigt:
+
+```{r other_geo_total_ng,  echo=FALSE}
+    other_geo_total_ng=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others_total_ng <- sum(other_geo_total_ng$values)
+dec_others_total_ng
+```
+
+Eine Visualisierung der Gesamtanzahl von Entscheidungen zu `r COUNTRY` im Jahr 2017:
+
+```{r geo_decision_pie_ng, echo = FALSE}
+# some technical workarounds for adding the row with the others (XX),
+# and for sorting
+major_geo_total_ng$geo <- as.character(major_geo_total_ng$geo)
+all_geo_total_ng <- rbind(major_geo_total_ng, c("XX",dec_others_total_ng))
+all_geo_total_ng$values <- as.numeric(all_geo_total_ng$values) 
+all_geo_total_ng$geo <- factor(all_geo_total_ng$geo, levels = arrange(all_geo_total_ng, values)$geo)
+# The real thing
+geo_dec_pie_ng <- ggplot(all_geo_total_ng, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y", start=0) + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle(paste("Entscheidungen über Asyl, ",COUNTRY,  " , 2017"), subtitle = paste("EU-Länder; XX ist die Summe aller Länder mit > ", cutoff, " Entscheidungen")) + theme_bw() + theme(axis.title=element_blank()) 
+geo_dec_pie_ng
+```
+
+
+```{r reduce_data_ng, echo = FALSE}
+major_geo_ng <-filter(migr_asydcfsta, geo %in% major_geo_total_ng$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,decision,values) 
+major_geo_ng$geo <- factor(major_geo_ng$geo, levels = arrange(filter(major_geo_ng, decision == "TOTAL"), desc(values))$geo)
+# bring decisions into correct order
+major_geo_ng$decision <- factor(major_geo_ng$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+
+```
+
+
+```{r decisions_abolut_ng, echo = FALSE}
+
+dec_bar <- ggplot(filter(major_geo_ng, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY,", 2017"), subtitle = "in absoluten Zahlen")
+```
+
+```{r fill_hist_ng, echo=FALSE}
+dec_bar_fill <- ggplot(filter(major_geo_ng, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
+dec_bar_fill
+```
+
+
+
+
+
