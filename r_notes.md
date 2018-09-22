@@ -4,7 +4,7 @@ tibble
 glimpse
 filter 
 select
-arragne
+arrange
 mutate
 summarize
 pipe

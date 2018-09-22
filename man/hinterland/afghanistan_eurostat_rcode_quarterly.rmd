@@ -11,8 +11,10 @@ library(knitr)
 library(dplyr)
 library(eurostat)
 library(ggplot2)
+library(scales)
 #migr_asydcfstq=get_eurostat("migr_asydcfstq")
-#saveRDS(migr_asydcfstq, file="/home/suny/migr_asydcfstq_20180922.rds")
+#saveRDS(migr_asydcfstq, file="migr_asydcfstq_20180922.rds")
+migr_asydcfstq = readRDS(file="/home/suny/migr_asydcfstq_20180922.rds")
 glimpse(migr_asydcfstq)
 ```
 
@@ -43,7 +45,7 @@ decisions DE quarterly, percentage
 
 ```{r decisions_pct_de, echo = FALSE}
 
-dec_bar_de_pct <- ggplot(migr_asydcfstq_de_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity", , position="fill") + scale_fill_manual(values = dec_palette_grey) + scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Deutschland", subtitle = "vierteljährlich, in Prozent")
+dec_bar_de_pct <- ggplot(migr_asydcfstq_de_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity", position="fill") + scale_fill_manual(values = dec_palette_grey) + scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + scale_y_continuous(labels = percent) + theme_bw() + theme(legend.position="bottom", axis.title.x = element_blank(), axis.title.y = element_blank()) + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Deutschland", subtitle = "vierteljährlich, in Prozent")
 dec_bar_de_pct
 ```
 
@@ -63,7 +65,7 @@ decisions SE quarterly, percentage
 
 ```{r decisions_pct_se, echo = FALSE}
 
-dec_bar_se_pct <- ggplot(migr_asydcfstq_se_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity", , position="fill") + scale_fill_manual(values = dec_palette_grey)+ scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Schweden", subtitle = "vierteljährlich, in Prozent")
+dec_bar_se_pct <- ggplot(migr_asydcfstq_se_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity", position="fill") + scale_fill_manual(values = dec_palette_grey) + scale_y_continuous(labels = percent) + scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom", axis.title.x = element_blank(), axis.title.y = element_blank()) + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Schweden", subtitle = "vierteljährlich, in Prozent")
 dec_bar_se_pct
 ```
 
