@@ -16,7 +16,7 @@ Zurück zu unseren Daten. Sie decken die Jahre 2008 bis 2017 ab (Stand September
 
 ### Die Anerkennungsquote von afghanischen Staatsangehörigen in Deutschland: Hintergrund
 
-Agnes >>>
+verschönern >>>
 Im Folgenden werden wir die Anerkennungsquote für afghanische Staatsangehörige betrachten, erst in Deutschland, dann im Vergleich zu anderen europäischen Ländern, und schließlich im Vergleich zu anderen Herkunftsländern. 
 
 Die Anerkennungsquote ist in vieler Hinsicht wichtig. Politisch gilt sie als Indikator, ob Asylsuchende "zu Recht" nach Deutschland gekommen sind. Pragmatisch bedeutet eine Anerkennungsquote über 50% eine "gute Bleibeperspektive" und damit verbesserte Integrationsangebote in den ersten Monaten oder Jahren. Das BAMF beschreibt das so (http://www.bamf.de/SharedDocs/FAQ/DE/IntegrationskurseAsylbewerber/001-bleibeperspektive.html):
@@ -38,25 +38,25 @@ Wenn wir uns nun wieder den Daten zu Erstentscheiden von afghanischen Asylsuchen
 Afghanistan ist ein ungewöhnliches Herkunftsland, mit einer langen Geschichte von Flucht. "In der Zeit von 1978 bis 2012 stellte Afghanistan die höchste Zahl von Flüchtlingen weltweit (seit 2013 hat Syrien diese Position übernommen)." (http://www.kas.de/afghanistan/de/publications/48440/)
 Es hält Rang 9 im "Fragile State Index", und ist mit seinem Punktestand nach sozialen, wirtschaftlichen und politischen Indikatoren in der "High Alert"-Gruppe der 178 erfassten Länder. Dieser Index wurde 2005 als "Failed State Index" eingeführt, damals belegte Afghanistan Platz 11. 
 
-<<< Agnes
+<<< verschönern
 
 ### Die Anerkennungsquote von afghanischen Staatsangehörigen in Deutschland: Zurück zu den Daten
 
 Erst einmal schauen wir uns an, wie sich die Entscheidungen des BAMF über Anträge von afghanischen Staatsangehörigen über die Zeit entwickelt hat. In absoluten Zahlen sieht das aus wie in Abbildung 1.   
  Der Einbruch im dritten Quartal 2017 war die Folge eines schweren Anschlags, der auch die deutsche Botschaft beschädigte. 
-![Entscheidungen des BAMF zu Afghanistan, quartalsweise, in absoluten Zahlen](./Afgh_DE_decisions_quarterly_abs.png)
+![Entscheidungen des BAMF zu Afghanistan, Deutschland, quartalsweise, in absoluten Zahlen](./Afgh_DE_decisions_quarterly_abs.png)
 
-![Entscheidungen des BAMF zu Afghanistan, ab 2017, quartalsweise, in Prozent](Afgh_DE_decisions_quarterly_pct.png)
+![Entscheidungen des BAMF zu Afghanistan, Deutschland, ab 2017, quartalsweise, in Prozent](Afgh_DE_decisions_quarterly_pct.png)
 Hier wird die bereinigte Quote gezeigt, nicht inhaltlich entschiedene Anträge werden nicht dargestellt. Im Laufe des Jahres 2015 etablierte sich der Begriff der Bleibeperspektive. 2016 lag die Anerkennungsquote noch einmal über 50%, seit 2017 darunter.
 
 Wenn man diese Zahlen sieht und die Bedeutung der 50% kennt, fragt man sich: Kann es sein, dass über jeden Asylantrag aus Afghanistan einzeln und unabhängig entschieden wird, und sich seit Anfang 2017 am Ende jedes halben Jahres jedes Mal herausstellt, dass die Anerkennungsquote knapp unter 50% liegt? 
 
 ### Vergleich mit anderen europäischen Ländern: Warum das wichtig ist
 
-Agnes >>>
+verschönern >>>
 Wie ist die Anerkennungsquote in anderen Ländern Europas? Das ist wichtig. Das europäische Asylsystem basiert darauf, dass es keine Rolle spielt, in welchem Land jemand seinen Asylantrag stellt. Die Dublin-Abkommen setzen das auch voraus.
 
-Agnes <<<
+verschönern <<<
 ### Vergleich mit anderen europäischen Ländern: Zahlen
 
 Eurostat liefert Daten von 31 europäischen Staaten. Von vielen dieser Länder gibt es aber so wenig Entscheidungen, dass sich keine aussagekräftige Quote errechnen lässt. Deshalb grenzen wir unseren Vergleich auf die ein, in denen mindestens 1000 Entscheidungen getroffen wurden, und beschränken uns außerdem auf das Jahr 2017.
@@ -66,24 +66,24 @@ Eurostat liefert Daten von 31 europäischen Staaten. Von vielen dieser Länder g
 Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als 1000 Entscheidungen über Asylanträge von afghanischen Staatsangehörigen getroffen wurden:
     
 
-"| values|geo   |label                                          |"
-"|------:|:-----|:----------------------------------------------|"
-"| 184265|TOTAL |Insgesamt                                      |"
-"| 109732|DE    |Deutschland (bis 1990 früheres Gebiet der BRD) |"
-"|  25155|SE    |Schweden                                       |"
-"|  17730|AT    |Österreich                                     |"
-"|   7516|FR    |Frankreich                                     |"
-"|   5160|BE    |Belgien                                        |"
-"|   3094|CH    |Schweiz                                        |"
-"|   2134|EL    |Griechenland                                   |"
-"|   1972|IT    |Italien                                        |"
-"|   1909|UK    |Vereinigtes Königreich                         |"
-"|   1894|NL    |Niederlande                                    |"
-"|   1800|HU    |Ungarn                                         |"
-"|   1518|NO    |Norwegen                                       |"
-"|   1388|BG    |Bulgarien                                      |"
-"|   1349|DK    |Dänemark                                       |"
-"|   1334|FI    |Finnland                                       |"
+| values|geo   |label                                          |
+|------:|:-----|:----------------------------------------------|
+| 184265|TOTAL |Insgesamt                                      |
+| 109732|DE    |Deutschland (bis 1990 früheres Gebiet der BRD) |
+|  25155|SE    |Schweden                                       |
+|  17730|AT    |Österreich                                     |
+|   7516|FR    |Frankreich                                     |
+|   5160|BE    |Belgien                                        |
+|   3094|CH    |Schweiz                                        |
+|   2134|EL    |Griechenland                                   |
+|   1972|IT    |Italien                                        |
+|   1909|UK    |Vereinigtes Königreich                         |
+|   1894|NL    |Niederlande                                    |
+|   1800|HU    |Ungarn                                         |
+|   1518|NO    |Norwegen                                       |
+|   1388|BG    |Bulgarien                                      |
+|   1349|DK    |Dänemark                                       |
+|   1334|FI    |Finnland                                       |
 
 
 Wenn Du an diesen Zahlen zweifelst und sie selber überprüfen willst, finde ich das genau richtig. Misstrauen in Daten ist gut. Eurostat hat einen Data Explorer unter eurostat -> Daten -> Datenbank -> Datenbank nach Themen -> Bevölkerung und soziale Bedingungen -> Asyl und Gesteuerte Migration, oder Du googelst nach "migr_asydcfsta".
@@ -132,8 +132,12 @@ Und prozentual stellt es sich folgendermaßen dar:
 
 ![Entscheidungen in Europa 2017, in Prozent](./Afgh_dec_2017_pct.png)
 
-Das schwankt sehr. Die Quote muss nicht überall gleich sein - es ist beispielsweise denkbar, dass afghanische Asylsuchende einer besonders stark verfolgten Minderheit vor allem in einem europäischen Land Anträge stellen, und die Quote deshalb dort höher ist. Aber dieses Bild sieht nicht richtig aus. 
-Deutschland liegt 
+Deutschland liegt im Mittelfeld, und gerade unter den bekannten 50%. Von Land zu Land schwankt die Quote extrem. Sie muss nicht überall gleich sein - es ist beispielsweise denkbar, dass afghanische Asylsuchende einer besonders stark verfolgten Minderheit vor allem in einem europäischen Land Anträge stellen, und die Quote deshalb dort höher ist. Aber dieses Bild sieht nicht richtig aus. 
+
+#### Sind die Anerkennungsquoten für andere Herkunftsländer ähnlicher im europäischen Vergleich?
+
+
+
 
 #### Was ist in Schweden passiert?
 
@@ -142,43 +146,17 @@ Im Laufe des Jahres 2015 hat Schweden seine Flüchtlingspolitik dramatisch verä
 > „Es schmerzt mich, dass Schweden nicht in der Lage ist, auf diesem Niveau weitere Asylsuchende aufzunehmen“
 
 Um zu sehen, ob diese Politikänderung sich in den Anerkennungsquoten niedergeschlagen hat, stellen wir die zeitlichen Verlauf für Schweden dar. Und ja, es hat sich deutlich niedergeschlagen.
-![Entscheidungen des BAMF zu Afghanistan, ab 2017, quartalsweise, in Prozent](Afgh_DE_decisions_quarterly_pct.png)
+![Entscheidungen des BAMF zu Afghanistan, Schweden, ab 2017, quartalsweise, in Prozent](Afgh_SE_decisions_quarterly_pct.png)
 
 
-## Ist Afghanistan eine Ausnahme? Sind die Anerkennungsquoten anderer Länder ähnlicher?
- 
-* anderes Land, eins mit hoher, eins mit niedriger Anerkkenungsquote? Syrien, 
-
-
-#### Mehr Politik als Rechtsstaatlichkeit
-
-
-Bis zu diesem Punkt habe ich den Artikel eher trocken gehalten, juristisch und zahlenorientiert. Abschließend möchte ich doch noch einige persönliche Anmerkungen loswerden.
---- 
-
-
-
---- oder
-Die jungen Männer, die ich in der Unterkunft treffe, sind immer wieder im Stich gelassen und verraten worden. Von ihrem Geburtsland Afghanistan, in dem 25% (?) der Kinder arbeiten, nur xx % zur Schule gehen und diese Schulen offensichtlich schlecht sind. Vom Iran, der die afghanischen Flüchtlinge entrechtet und in den Krieg nach Syrien schickt (link). Von Deutschland, das sie in einem ganz ungesunden Schwebezustand hält, dem Abschreckung wichtiger ist als die Integration, und als rechtsstaatliche Prinzipien. Von der EU, die es nicht schafft, sich auf eine konsistente und sinnvolle gemeinsame Asylpolitik im Sinne der Genfer Flüchtlingskonvention zu einigen. Von der internationalen Staatengemeinschaft, die keinen Umgang mit den "Fragile States" findet. Alle Staaten, alle internationalen Organisation, alle Gesellschaften sind an ihrer Aufgabe gescheitert, diesen Leuten einen Rahmen zu bieten, in dem sie so leben können, wie es im 21. Jahrhundert üblich ist: Mit Ausbildung und Perspektive auf ein ganz normales Leben mit Familie und Arbeit. 
-
-Es ist zum Verrücktwerden. Im Großen ist dagegen nicht anzukommen. Jede und jeder, die oder der hier Lesen und Schreiben lernt, oder es sogar schafft, sich ein gutes Leben aufzubauen, ist ein Triumph über diese Zustände.
 
 ### Über diesen Artikel
 
 Seit 2016 beschäftigt sich der Refugee Datathon Munich mit Asylzahlen. Die Gruppe trifft sich regelmäßig, um Daten zugänglich und verständlich zu machen und so den Flüchtlingsunterstützer/innen zuzuarbeiten. Einige Ergebnisse werden veröffentlicht auf https://refugee-datathon-muc.org/. Das Ganze lebt vom Zusammenspiel von Fachwissen und Technik. Sowohl Fachleute als auch IT-Menschen sind immer eingeladen, mitzumachen. 
+Der Code zu diesem Artikel ist auf github.
 
-Kontakt: xxx meetup.com, email? 
+Kontakt: suny.kim@gmx.net
 
-### xxx Persönliche Ansicht
-
-    * Afghanistan ist schwierig weil fragile state, dafür wurde das Asylrecht nicht gemacht
-    * Die Praxis hat weniger mit Recht zu tun als mit Kalkül: Abschrecken, aber nicht zu viele Skandale provozieren. Das heißt: 
-    * Abschreckung, (1) indem man den Leuten die Perspektive nimmt (Anerkennungsquote unter 50%, weniger Integration, Ablehnungen); (2) Abschiebungen - regelmäßig, aber nicht viele.
-    * Denn sonst würden sich die Fälle häufen, dass Abgeschobene sterben, und das will man auch nicht
-    * zugleich Behauptung, dass das alles Kriminelle sind - stimmt nicht 
-
-Mieses Spiel. Und gefährlich, viele junge Leute ohne Perspektive in D. Die internationale Gemeinschaft soll sich mal systematisch Gedanken drüber machen, wie sie mit den failed states umgeht.
-Nicht alles "Schuld von Deutschland". Afghanistan, Iran haben diese Leute auch verraten
 
 ### Ab hier nur Notizen
 
@@ -204,6 +182,3 @@ Content to add:
 
 Code ist hier: https://github.com/muc-fluechtlingsrat/r-eurostat-refugees/blob/master/man/afghanistan_eurostat_nontech.rmd
 
-Links
-Geschichte der Auswanderung aus Afghanistan, von Januar 2013
-http://www.bpb.de/gesellschaft/migration/kurzdossiers/256457/afghanische-diaspora?p=all
