@@ -76,10 +76,10 @@ Es hält Rang 9 im "Fragile State Index", und ist mit seinem Punktestand nach so
 ### Die Anerkennungsquote von afghanischen Staatsangehörigen in Deutschland: Zurück zu den Daten
 
 Vorbereitend schauen wir uns die monatliche Entwicklung von den Entscheidungen des BAMF über Anträge von afghanischen Staatsangehörigen an. Der Einbruch Mitte 2017 war die Folge eines schweren Anschlags, der auch die deutsche Botschaft beschädigte. Seit dem Jahreswechsel 2017/2018 sind die Zahlen stark gesunken. Die Gesamtzahl formeller Erledigungen steigt prozentual stark an.
-![Entscheidungen des BAMF zu Afghanistan, ab 2017, monatlich](/Users/suny/Downloads/dtuFq.png)
+![Entscheidungen des BAMF zu Afghanistan, ab 2017, monatlich](./dtuFq.png)
 xxx
 erstmal bamf daten und datawrapper, später in eurostat und schwarz-weiss; neue Daten holen
-![Entscheidungen des BAMF zu Afghanistan, ab 2017, monatlich, in Prozent](/Users/suny/Downloads/pIWFH.png)
+![Entscheidungen des BAMF zu Afghanistan, ab 2017, monatlich, in Prozent](./pIWFH.png)
 https://datawrapper.dwcdn.net/dtuFq/8/
 Die bereinigte Schutzquote liegt fast durchgehend knapp unter 50%. Die hohe Quote im Juli 2017 fällt nicht ins Gewicht, weil in diesem Monat nur sehr wenige Entscheidungen getroffen wurden.
 https://datawrapper.dwcdn.net/pIWFH/5/
@@ -131,7 +131,7 @@ kable(geodic_major, caption = "Ländercodes der wichtigsten Antragsländer")
 dec_others_total_af <- sum(other_geo_total_af$values)
 dec_others_total_af
 ```
-Diese Zahlen sind für mich schon überraschend. Die anderen 17 Länder sind zusammen für nur `r dec_others_total` Entscheidungen verantwortlich.
+Diese Zahlen sind für mich schon überraschend. Die anderen 17 Länder sind zusammen für nur `r dec_others_total_af` Entscheidungen verantwortlich.
 
 Eine Visualisierung der Gesamtanzahl von Entscheidungen zu Afghanistan im Jahr 2017:
 
