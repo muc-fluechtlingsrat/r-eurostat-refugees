@@ -1,0 +1,25 @@
+TOTAL	Insgesamt
+TOTAL_POS	Gesamtzahl der positiven Beschlüssen
+GENCONV	Genfer Abkommen Rechtsstatus
+HUMSTAT	Humanitärer Rechtsstatus
+OTH_POS	Sonstige positive Beschlüsse
+OTH_NONST	Sonstige Nicht-Status-Entscheidungen
+APP_PENDING	Laufende Anträge am Ende des Zeitraums
+GRANTED	Bewilligt
+FIRST	Erstmals erteilte Aufenthaltstitel
+CHANGED	Geändert
+REJECTED	Abgelehnt
+RENEWED	Verlängert
+WITHDRAWN	Zurückgezoger
+SUB_PROT	Subsidiärer Schutz
+TEMP_PROT	Vorübergehender Schutz
+ACC	Bewilligte Gesuche
+PART	Teilweise bewilligte Gesuche
+REF	Abgelehnte Gesuche
+RECV	Eingegangene Mitteilungen
+OBJ	Abgelehnte Mitteilungen
+SOV	Souveränitätsklausel (Artikel 17.1)
+RESP_DEF	Auffangtatbestand 
+RD_NCRI	Auffangtatbestand: Keine Kriterien anwendbar (Artikel 3.2 Satz 1)
+RD_NTRF	Auffangtatbestand: Keine Überstellung (Artikel 3.2 Satz 2 und 3)
+RD_NTL	Auffangtatbestand: Überstellung wird nicht innerhalb der Fristen durchgeführt (Artikel 29.2)

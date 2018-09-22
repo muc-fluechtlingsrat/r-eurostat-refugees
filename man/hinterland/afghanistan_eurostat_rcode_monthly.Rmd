@@ -1,0 +1,14 @@
+---
+title: "Afghanistan Eurostat: Monatliche Daten"
+output: html_notebook
+---
+
+
+
+
+```{r}
+library(knitr)
+library(dplyr)
+library(eurostat)
+```
+
