@@ -1,0 +1,71 @@
+---
+title: "Afghanistan Eurostat: Monatliche Daten"
+output: html_notebook
+---
+
+
+
+
+```{r get_libraries_and_data}
+library(knitr)
+library(dplyr)
+library(eurostat)
+library(ggplot2)
+#migr_asydcfstq=get_eurostat("migr_asydcfstq")
+#saveRDS(migr_asydcfstq, file="/home/suny/migr_asydcfstq_20180922.rds")
+glimpse(migr_asydcfstq)
+```
+
+Reduce to DE and SE as geo, and AF as citizen. Drop unit.
+Drop decisions TOTAL and TOTAL_POS
+Reduce to total os sex, age. 
+```{r reduce_data}
+migr_asydcfstq_de_af <- filter(migr_asydcfstq, geo == "DE" & sex == "T" & age == "TOTAL" & citizen == "AF" & geo %in% c("DE","SE") & decision != "TOTAL" & decision != "TOTAL_POS") %>%  select(decision,time,values) 
+# rearrange according to decision
+migr_asydcfstq_de_af$decision <- factor(migr_asydcfstq_de_af$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+migr_asydcfstq_se_af <- filter(migr_asydcfstq, geo == "SE" & sex == "T" & age == "TOTAL" & citizen == "AF" & geo %in% c("DE","SE") & decision != "TOTAL" & decision != "TOTAL_POS") %>%  select(decision,time,values) 
+migr_asydcfstq_se_af$decision <- factor(migr_asydcfstq_se_af$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+
+glimpse(migr_asydcfstq_de_af)
+glimpse(migr_asydcfstq_se_af)
+```
+
+decisions DE quarterly, absolute numbers 
+
+```{r decisions_abolut_de, echo = FALSE}
+dec_palette_grey=c("#000000","#C0C0C0","#D3D3D3","#E4E4E4","#E8E8E8","#C8C8C8","#808080")
+
+dec_bar_de_total <- ggplot(migr_asydcfstq_de_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity") + scale_fill_manual(values = dec_palette_grey)+ scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Deutschland", subtitle = "vierteljährlich, in absoluten Zahlen")
+dec_bar_de_total
+```
+
+decisions DE quarterly, percentage 
+
+```{r decisions_pct_de, echo = FALSE}
+
+dec_bar_de_pct <- ggplot(migr_asydcfstq_de_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity", , position="fill") + scale_fill_manual(values = dec_palette_grey) + scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Deutschland", subtitle = "vierteljährlich, in Prozent")
+dec_bar_de_pct
+```
+
+Im Laufe des Jahres 2015 entwickelte sich der Begriff der "guten Bleibeperspektive" für Asylsuchende aus Ländern mit > 50% Anerkennungsquote. 2016 lag Afghanistan noch drüber. Dann nicht mehr (Details?)
+
+https://thruttig.wordpress.com/2017/01/29/abschiebungen-nach-afghanistan-sollen-gescheiterten-einsatz-kaschieren/
+https://www.nds-fluerat.org/25211/aktuelles/bmas-oeffnung-der-ausbildungsfoerderung-und-der-berufsbezogenen-sprachkurse-fuer-afghanische-asylsuchende/ 
+
+
+
+```{r decisions_abolut_se, echo = FALSE}
+
+dec_bar_se_total <- ggplot(migr_asydcfstq_se_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity") + scale_fill_manual(values = dec_palette_grey) + scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Schweden", subtitle = "vierteljährlich, in absoluten Zahlen")
+dec_bar_se_total
+```
+decisions SE quarterly, percentage 
+
+```{r decisions_pct_se, echo = FALSE}
+
+dec_bar_se_pct <- ggplot(migr_asydcfstq_se_af) + aes(x=time, y=values, fill=decision) + geom_bar(stat="identity", , position="fill") + scale_fill_manual(values = dec_palette_grey)+ scale_x_date(breaks = date_breaks("1 year"),labels = date_format("%Y")) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan in Schweden", subtitle = "vierteljährlich, in Prozent")
+dec_bar_se_pct
+```
+
+Politikwechsel Ende 2015 in Schweden ist deutlich sichtbar.
+https://www.theguardian.com/world/2015/nov/24/sweden-asylum-seekers-refugees-policy-reversal

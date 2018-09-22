@@ -1,0 +1,136 @@
+---
+title: "Asylentscheidungen in Europa, jährlich"
+author: "ynux"
+date: "September, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+library(knitr)
+library(dplyr)
+library(eurostat)
+migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
+# Ein Blick in die ersten Datensätze:
+kable(filter(migr_asydcfsta, citizen == "AF")[c(1:8),], caption = "Ein paar Zeilen aus dem Datensatz, zum Herkunftsland Afhganistan")
+```
+ 
+* `unit`: Uninteressant
+* `citizen`: Die Staatsangehörigkeit der Antragssteller/innen
+* `sex`: Kann folgende Werte annehmen: `r levels(migr_asydcfsta$sex)`
+* `age`: Kann folgende Werte annehmen: `r levels(migr_asydcfsta$age)`
+* `decision`: Kann folgende Werte annehmen: `r levels(migr_asydcfsta$decision)`
+* `geo`: Das europäische Land, in dem der Antrag gestellt wurde
+* `time`: Das Jahr
+* `values`: Die Anzahl Entscheidungen
+
+Dies sind die europäischen Länder, in denen im Jahr 2017 mehr als 1000 Entscheidungen über Asylanträge von afghanischen Staatsangehörigen getroffen wurden:
+
+```{r reduce_data_total}
+cutoff=1000
+major_geo_total=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28") %>% 
+  select(geo,values) 
+# Ab jetzt ohne TOTAL
+major_geo_total <- filter(major_geo_total, geo != "TOTAL")
+
+```
+Von Hand nachprüfbar über: Eurostat Data Explorer unter eurostat -> Daten -> Datenbank -> Datenbank nach Themen -> Bevölkerung und soziale Bedingungen -> Asyl und Gesteuerte Migration, oder Du googelst nach "migr_asydcfsta".
+
+Die Daten zeigen Ländercodes, die vollen Bezeichnungen sind hier:
+
+```{r country_codes,  echo=FALSE}
+geodic = read.delim(file = "/tmp/geo.dic", col.names = c("geo","label"))
+geodic_major <- merge(geodic,major_geo_total) %>% select(values,geo,label) %>% arrange(-values)
+kable(geodic_major, caption = "Länder mit mehr als 1000 Entscheidungen zu Asylanträgen aus Afghanistan")
+
+
+```
+
+```{r other_geo_total_af,  echo=FALSE}
+    other_geo_total_af=filter(migr_asydcfsta, values <= cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>%  arrange(desc(values))
+dec_others_total_af <- sum(other_geo_total_af$values)
+dec_others_total_af
+```
+Diese Zahlen sind für mich schon überraschend. Die anderen 17 Länder sind zusammen für nur `r dec_others_total_af` Entscheidungen verantwortlich.
+
+Eine Visualisierung der Gesamtanzahl von Entscheidungen zu Afghanistan im Jahr 2017:
+
+```{r geo_decision_pie, echo = FALSE}
+library(ggplot2)
+# some technical workarounds for adding the row with the others (XX),
+# and for sorting
+major_geo_total$geo <- as.character(major_geo_total$geo)
+all_geo_total <- rbind(major_geo_total, c("Rest",dec_others_total_af))
+all_geo_total$values <- as.numeric(all_geo_total$values) 
+all_geo_total$geo <- factor(all_geo_total$geo, levels = arrange(all_geo_total, values)$geo)
+# sort it
+all_geo_total_sorted <- arrange(all_geo_total, -values)
+# For the labels
+big = 8
+blables <- c(rev(levels(all_geo_total$geo))[c(1:big)],rep("",dim(all_geo_total)[1]-big))
+y.breaks <- cumsum(all_geo_total_sorted$values) - all_geo_total_sorted$values/2
+# The real thing
+geo_dec_pie <- ggplot(all_geo_total_sorted, aes(x="", y=values, fill=geo)) + geom_col(colour = "black") + coord_polar("y") + scale_fill_grey(start = 0.4, end = 0.9) + ggtitle ("Entscheidungen über Asyl, Afghanistan, 2017", subtitle = "EU-Länder; \"Rest\" ist die Summe aller Länder mit < 1000 Entscheidungen") + scale_y_continuous(labels=blables, breaks = y.breaks) + theme_bw() + theme(axis.title=element_blank()) 
+geo_dec_pie
+```
+
+Spanien beispielsweise ist nicht in unserer Analyse vertreten, weil es nicht auf 1000 Entscheidungen kommt. Deutschland verantwortet fast 60% aller Entscheidungen. Nun ist Deutschland auch das bevölkerungsreichste Land der EU. Wenn wir uns die EU-Länder mit mehr als 8 Mio Einwohnern anschauen und neben ihre Einwohnerzahl (geteilt durch 1000) die Anzahl Entscheidungen stellen, erhalten wir dieses Bild:
+
+```{r population_decisions, echo = FALSE}
+demo_pjan <- readRDS(file="/tmp/demo_pjan_20180825.rds")
+compare_dec=filter(migr_asydcfsta, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% select(geo, values) %>% mutate( stat = "dec")
+compare_dec <- droplevels(compare_dec)
+compare_pop <- demo_pjan %>% filter(age == "TOTAL" & sex == "T" & time == "2017-01-01" & geo %in% levels(compare_dec$geo)) %>% select(geo, values) %>% mutate( stat = "pop")
+compare_pop <- droplevels(compare_pop)
+# divide population by 1000, otherwise decisions won't be visible
+compare_pop <- mutate(compare_pop, values = values / 1000)
+compare_dec_pop <- rbind(compare_dec, compare_pop)
+
+drop_countries_comp <- filter(compare_pop, values < 8000 & stat == "pop") %>% select(geo)
+# population first, decisions second
+compare_dec_pop$stat <- factor(compare_dec_pop$stat, levels=c("pop","dec"))
+# sort by pop 
+compare_dec_pop$geo <- factor(compare_dec_pop$geo, levels = arrange(filter(compare_dec_pop, stat == "pop"), desc(values))$geo)
+
+bar_compare_dec_pop <- ggplot(filter(compare_dec_pop, !geo %in% unlist(drop_countries_comp)),  aes(x=geo, y=values, fill=stat)) + geom_bar(stat="identity", position="dodge") +  ggtitle("Vergleich von Bevölkerung in Tsd zu Asylentscheidungen", subtitle=" zu Afghanistan, 2017; EU Länder mit mehr als 8 Mio Einwohnern") + theme_bw() + theme(legend.position="bottom") + scale_fill_grey(start = 0.4, end = 0.7)
+
+bar_compare_dec_pop 
+```
+
+In den großen Ländern außer Deutschland gab es auffallend wenig Entscheidungen, in den kleinen Ländern Schweden und Österreich dagegen überproportional viele. 
+
+Bisher haben wir Vorbetrachtungen angestellt, um unsere Daten zu verstehen und zu überlegen, welche europäischen Aufnahmeländer wir sinnvoll untersuchen können. Jetzt schauen wir uns die Entscheidungen an.
+
+## Die Entscheidungen: GENCONV + HUMSTAT + SUB_PROT + TEMP_PROT + REJECTED = TOTAL_POS + REJECTED = TOTAL
+
+Wie haben unsere 15 Länder entschieden? Was für Entscheidungstypen haben wir überhaupt?
+
+```{r reduce_data, echo = FALSE}
+major_geo <-filter(migr_asydcfsta, geo %in% major_geo_total$geo, time >= "2017-01-01", sex == "T", age == "TOTAL", citizen == "AF", geo != "EU28", geo != "TOTAL") %>% 
+  select(geo,decision,values) 
+major_geo$geo <- factor(major_geo$geo, levels = arrange(filter(major_geo, decision == "TOTAL"), desc(values))$geo)
+# bring decisions into correct order
+major_geo$decision <- factor(major_geo$decision, levels=c("REJECTED","TEMP_PROT","HUMSTAT","SUB_PROT","GENCONV","TOTAL_POS","TOTAL"))
+
+```
+
+
+```{r decision_dic, echo=FALSE}
+decision.dic <- read.delim(file = "/tmp/decision.dic", col.names = c("code","label"))
+kable(filter(decision.dic, code %in% levels(major_geo$decision)), caption = "Entscheidungscodes")
+```
+
+```{r decisions_abolut, echo = FALSE}
+dec_palette_grey=c("#000000","#C0C0C0","#D3D3D3","#E4E4E4","#E8E8E8","#C8C8C8","#808080")
+
+dec_bar <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan 2017", subtitle = "in absoluten Zahlen")
+```
+
+```{r fill_hist, echo=FALSE}
+dec_bar_fill <- ggplot(filter(major_geo, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle("Entscheidungen über Asylanträge aus Afghanistan 2017", subtitle = "in Prozent")
+dec_bar_fill
+```
+
+
+
