@@ -18,7 +18,7 @@ zweite Ergänzung.
 ```{r get_data, echo=FALSE}
 library(knitr)
 library(dplyr)
-migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
+#migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
 ```
 
 ### Türkei
@@ -161,7 +161,7 @@ dec_bar_fill
 ```{r reduce_data_total_er}
 COUNTRY="Eritrea"
 CODE="ER"
-cutoff=500
+cutoff=1000
 major_geo_total_er=filter(migr_asydcfsta, values > cutoff, time == "2017-01-01", decision == "TOTAL", sex == "T", age == "TOTAL", citizen == CODE, geo != "EU28") %>% 
   select(geo,values) 
 ```
@@ -212,13 +212,13 @@ major_geo_er$decision <- factor(major_geo_er$decision, levels=c("REJECTED","TEMP
 
 ```{r decisions_abolut_er, echo = FALSE}
 
-dec_bar <- ggplot(filter(major_geo_er, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
-dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY,", 2017"), subtitle = "in absoluten Zahlen")
+dec_bar_er <- ggplot(filter(major_geo_er, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision)) 
+dec_bar_er +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY,", 2017"), subtitle = "in absoluten Zahlen")
 ```
 
 ```{r fill_hist_er, echo=FALSE}
-dec_bar_fill <- ggplot(filter(major_geo_er, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
-dec_bar_fill
+dec_bar_er_fill <- ggplot(filter(major_geo_er, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
+dec_bar_er_fill
 ```
 
 
@@ -285,7 +285,8 @@ dec_bar +  scale_fill_manual(values = dec_palette_grey) + theme_bw() + theme(leg
 ```
 
 ```{r fill_hist_ng, echo=FALSE}
-dec_bar_fill <- ggplot(filter(major_geo_ng, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom") + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
+library(scales)
+dec_bar_fill <- ggplot(filter(major_geo_ng, decision != "TOTAL" & decision != "TOTAL_POS")) + geom_col(aes(x=geo, y=values, fill=decision), position="fill") + scale_fill_grey() + theme_bw() + theme(legend.position="bottom", axis.title.x = element_blank(), axis.title.y = element_blank()) + scale_y_continuous(label=percent) + ggtitle(paste("Entscheidungen über Asylanträge aus ",COUNTRY," 2017"), subtitle = "in Prozent")
 dec_bar_fill
 ```
 
