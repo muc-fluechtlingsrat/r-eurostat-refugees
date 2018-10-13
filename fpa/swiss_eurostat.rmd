@@ -1,0 +1,60 @@
+---
+title: "Eurostat Asyldaten und die Schweiz" 
+author: "ynux"
+date: "Oktober 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+### Was können wir aus den Asyldaten von Eurostat herausholen zur Schweiz?
+
+Die Schweiz ist bei Eurostat dabei.
+Wir schauen die jährlichen erstinstanzlichen Entscheidungen an (es gibt sonst noch Anträge, Dublin und so). Außerdem beschränken wir uns auf das Jahr 2017. 
+```{r get_data, echo=FALSE}
+library(knitr)
+library(dplyr)
+migr_asydcfsta=readRDS(file="/tmp/migr_asydcfsta_20180812.rds")
+```
+
+### Anzahl der Asylentscheidungen in Europa und in der Schweiz
+
+```{r dec_total_all}
+geo_total_all=filter(migr_asydcfsta, 
+                     time == "2017-01-01", 
+                     decision == "TOTAL", 
+                     sex == "T", 
+                     age == "TOTAL", 
+                     citizen == "TOTAL", 
+                     geo != "EU28") %>% 
+  select(geo,values) 
+```
+
+### Die Anzahl Entscheidungen pro Antragsland
+
+Dies sind alle 31 europäische Länder, die Eurostat mit Daten beliefern, mit ihrer Anzahl an Asylentscheidungen im Jahr 2017.
+    
+```{r look_at_total_all,echo=FALSE}
+library(knitr)
+# sortieren
+geo_total_all_ordered <- arrange(geo_total_all, desc(values))
+# Hervorheben CH
+chindex <- match("CH",geo_total_all_ordered$geo) 
+#geo_total_all_chred <- geo_total_all_ordered
+#geo_total_all_chred[chindex,2] <- paste("\\color{red}{",geo_total_all_ordered$values[chindex],"}")
+#kable(geo_total_all_chred, caption = paste(" Entscheidungen zu Asylanträgen im Jahr 2017" ), "latex", escape = F)
+kable(geo_total_all_ordered, caption = paste(" Entscheidungen zu Asylanträgen im Jahr 2017" ))
+geo_total_all <- filter(geo_total_all, geo != "TOTAL")
+```
+
+
+Die Schweiz ist auf Platz `r chindex-1` Nun sind die Länder verschieden groß. Wie sieht es aus, wenn man die Bevölkerung danebenstellt?
+
+### Die Entscheidungen im Vergleich
+Aus welchen Ländern kamen die Asylsuchenden, über deren Anträge entschieden wurden?
+
+### Wie wurde über die 5 wichtigsten Herkunftsländer entschieden?
+
+### Wie wurde über diese Länder im Rest Europas entschieden?
